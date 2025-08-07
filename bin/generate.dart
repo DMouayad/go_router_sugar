@@ -10,7 +10,7 @@ Future<void> main(List<String> args) async {
     return;
   }
 
-  // Handle version flag  
+  // Handle version flag
   if (args.contains('--version') || args.contains('-v')) {
     print('go_router_sugar v1.0.0');
     return;
@@ -43,29 +43,32 @@ Future<void> main(List<String> args) async {
   print('🚀 Generating go_router_sugar routes...');
   print('📁 Pages directory: $pagesDirectory');
   print('📄 Output file: $outputFile');
-  
+
   try {
     // Check if we're in a Flutter project
     if (!File('pubspec.yaml').existsSync()) {
-      print('❌ Error: No pubspec.yaml found. Run this from your Flutter project root.');
+      print(
+          '❌ Error: No pubspec.yaml found. Run this from your Flutter project root.');
       exit(1);
     }
 
     // Check if pages directory exists
     if (!Directory(pagesDirectory).existsSync()) {
       print('❌ Error: Pages directory "$pagesDirectory" does not exist.');
-      print('💡 Create the directory or specify a different one with --pages-dir');
+      print(
+          '💡 Create the directory or specify a different one with --pages-dir');
       exit(1);
     }
-    
+
     // Create custom build.yaml if using non-default settings
-    if (pagesDirectory != 'lib/pages' || outputFile != 'lib/app_router.g.dart') {
+    if (pagesDirectory != 'lib/pages' ||
+        outputFile != 'lib/app_router.g.dart') {
       await _createCustomBuildConfig(pagesDirectory, outputFile);
     }
-    
+
     // Run the code generation
     final result = await Process.run('dart', ['run', 'build_runner', 'build']);
-    
+
     if (result.exitCode == 0) {
       print('✅ Routes generated successfully!');
       print('Generated file: $outputFile');
@@ -86,7 +89,8 @@ Future<void> main(List<String> args) async {
 }
 
 /// Creates a custom build.yaml configuration for non-default settings
-Future<void> _createCustomBuildConfig(String pagesDirectory, String outputFile) async {
+Future<void> _createCustomBuildConfig(
+    String pagesDirectory, String outputFile) async {
   final buildConfig = '''
 # Auto-generated build configuration for go_router_sugar
 targets:

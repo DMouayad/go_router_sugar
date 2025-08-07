@@ -15,7 +15,6 @@ abstract class Routes {
 
   /// Route: /home
   static const String home = '/home';
-
 }
 
 /// Auto-generated router configuration
@@ -40,8 +39,8 @@ class AppRouter {
     ],
   );
 
-    /// Access the router configuration
-    static GoRouter get router => instance;
+  /// Access the router configuration
+  static GoRouter get router => instance;
 }
 
 /// Type-safe navigation helpers
@@ -65,7 +64,6 @@ extension AppRouterNavigation on GoRouter {
   void pushToHome() {
     push('/home');
   }
-
 }
 
 /// Static navigation helpers
@@ -91,5 +89,4 @@ class Navigate {
   static void pushToHome() {
     AppRouter.instance.push('/home');
   }
-
 }

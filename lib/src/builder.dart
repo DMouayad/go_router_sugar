@@ -23,7 +23,8 @@ class RouteBuilder implements Builder {
   @override
   Map<String, List<String>> get buildExtensions {
     // Try to get output file from options, fallback to default
-    final outputFile = options.config['output_file'] as String? ?? 'lib/app_router.g.dart';
+    final outputFile =
+        options.config['output_file'] as String? ?? 'lib/app_router.g.dart';
     return {
       'lib/\$lib\$': [outputFile]
     };

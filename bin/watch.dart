@@ -35,36 +35,39 @@ Future<void> main(List<String> args) async {
   }
 
   final watchMode = args.contains('--watch') || args.contains('-w');
-  
+
   print('🚀 Go Router Sugar${watchMode ? ' (Watch Mode)' : ''}');
   print('📁 Pages directory: $pagesDirectory');
   print('📄 Output file: $outputFile');
-  
+
   if (watchMode) {
     print('👀 Watching for file changes...');
     print('💡 Create/modify pages in $pagesDirectory to see auto-generation');
     print('🛑 Press Ctrl+C to stop watching');
-    
+
     // Create custom build.yaml if using non-default settings
-    if (pagesDirectory != 'lib/pages' || outputFile != 'lib/app_router.g.dart') {
+    if (pagesDirectory != 'lib/pages' ||
+        outputFile != 'lib/app_router.g.dart') {
       await _createCustomBuildConfig(pagesDirectory, outputFile);
     }
-    
+
     await _runWatchMode();
   } else {
     print('🔨 Generating routes...');
-    
+
     // Create custom build.yaml if using non-default settings
-    if (pagesDirectory != 'lib/pages' || outputFile != 'lib/app_router.g.dart') {
+    if (pagesDirectory != 'lib/pages' ||
+        outputFile != 'lib/app_router.g.dart') {
       await _createCustomBuildConfig(pagesDirectory, outputFile);
     }
-    
+
     await _generateOnce();
   }
 }
 
 /// Creates a custom build.yaml configuration for non-default settings
-Future<void> _createCustomBuildConfig(String pagesDirectory, String outputFile) async {
+Future<void> _createCustomBuildConfig(
+    String pagesDirectory, String outputFile) async {
   final buildConfig = '''
 # Auto-generated build configuration for go_router_sugar
 targets:
@@ -119,7 +122,7 @@ For more information, visit: https://pub.dev/packages/go_router_sugar
 Future<void> _generateOnce() async {
   try {
     final result = await Process.run('dart', ['run', 'build_runner', 'build']);
-    
+
     if (result.exitCode == 0) {
       print('✅ Routes generated successfully!');
     } else {
@@ -132,12 +135,13 @@ Future<void> _generateOnce() async {
 
 Future<void> _runWatchMode() async {
   try {
-    final process = await Process.start('dart', ['run', 'build_runner', 'watch']);
-    
+    final process =
+        await Process.start('dart', ['run', 'build_runner', 'watch']);
+
     // Forward stdout and stderr
     process.stdout.listen((data) => stdout.add(data));
     process.stderr.listen((data) => stderr.add(data));
-    
+
     // Wait for the process to complete
     await process.exitCode;
   } on Exception catch (e) {
