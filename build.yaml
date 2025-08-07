@@ -1,0 +1,27 @@
+# Configuration for the go_router_sugar package itself
+# This tells build_runner how to use our code generator
+builders:
+  routes:
+    # Points to the Dart file containing our builder logic
+    import: "package:go_router_sugar/src/builder.dart"
+    # The factory function that creates our builder instance
+    builder_factories: ["routeBuilder"]
+    # Input/output file mapping - processes the entire lib directory
+    build_extensions: 
+      "lib/$lib$": ["lib/app_router.g.dart"]
+    # Automatically apply to the root package using this builder
+    auto_apply: root_package
+    # Output goes to source directory for easy importing
+    build_to: source
+    # Run on the root package only, not dependencies
+    required_inputs: []
+    
+# Global build configuration
+global_options:
+  # Default configuration options that users can override
+  go_router_sugar|routes:
+    options:
+      pages_directory: "lib/pages"
+      generate_navigation_helpers: true
+      router_class_name: "AppRouter"
+      output_file: "lib/app_router.g.dart"

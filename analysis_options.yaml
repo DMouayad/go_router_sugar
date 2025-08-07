@@ -1,0 +1,77 @@
+# Static analysis configuration for go_router_sugar
+# This file configures the analyzer to provide the best experience for
+# Flutter package development and ensures code quality standards.
+
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  errors:
+    file_names: ignore
+  # Exclude generated files from analysis
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.mocks.dart"
+    - "build/**"
+    - "example/lib/app_router.g.dart"
+  
+  # Enable additional language features
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+
+  # Configure plugins
+  plugins:
+    - dart_code_metrics
+
+# Customize linting rules for package development
+linter:
+  rules:
+    # Disable rules that don't make sense for generated code
+    avoid_print: false # Allow print statements in builder code
+    
+    # Enable additional rules for better code quality
+    prefer_single_quotes: true
+    prefer_relative_imports: true
+    sort_pub_dependencies: true
+    
+    # Documentation rules
+    public_member_api_docs: true
+    
+    # Code style rules
+    always_declare_return_types: true
+    avoid_catches_without_on_clauses: true
+    avoid_catching_errors: true
+    avoid_unused_constructor_parameters: true
+    cancel_subscriptions: true
+    close_sinks: true
+    comment_references: true
+    one_member_abstracts: true
+    only_throw_errors: true
+    package_names: true
+    prefer_const_constructors: true
+    prefer_const_constructors_in_immutables: true
+    prefer_const_declarations: true
+    prefer_final_fields: true
+    prefer_final_in_for_each: true
+    prefer_final_locals: true
+    sort_child_properties_last: true
+    sort_constructors_first: true
+    sort_unnamed_constructors_first: true
+    unawaited_futures: true
+    use_super_parameters: true
+
+# Dart code metrics configuration
+dart_code_metrics:
+  metrics:
+    cyclomatic-complexity: 20
+    number-of-parameters: 4
+    maximum-nesting-level: 5
+  
+  rules:
+    - no-boolean-literal-compare
+    - no-empty-block
+    - prefer-trailing-comma
+    - prefer-conditional-expressions
+    - no-equal-then-else
