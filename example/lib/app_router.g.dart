@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:go_router_sugar_example/pages/about_page.dart';
 import 'package:go_router_sugar_example/pages/animated_page.dart';
 import 'package:go_router_sugar_example/pages/home_page.dart';
+import 'package:go_router_sugar_example/pages/main_page.dart';
 import 'package:go_router_sugar_example/pages/premium_page.dart';
 import 'package:go_router_sugar_example/pages/products/[id]_page.dart';
 import 'package:go_router_sugar_example/pages/products/list_page.dart';
@@ -24,6 +25,9 @@ abstract class Routes {
   /// Route: /home
   static const String home = '/home';
 
+  /// Route: /main
+  static const String main = '/main';
+
   /// Route: /premium
   static const String premium = '/premium';
 
@@ -35,6 +39,7 @@ abstract class Routes {
 
   /// Route: /user/profile/settings
   static const String userprofilesettings = '/user/profile/settings';
+
 }
 
 /// Auto-generated router configuration
@@ -60,6 +65,12 @@ class AppRouter {
         path: '/home',
         builder: (BuildContext context, GoRouterState state) {
           return const HomePage();
+        },
+      ),
+      GoRoute(
+        path: '/main',
+        builder: (BuildContext context, GoRouterState state) {
+          return const MainPage();
         },
       ),
       GoRoute(
@@ -91,8 +102,8 @@ class AppRouter {
     ],
   );
 
-  /// Access the router configuration
-  static GoRouter get router => instance;
+    /// Access the router configuration
+    static GoRouter get router => instance;
 }
 
 /// Type-safe navigation helpers
@@ -125,6 +136,16 @@ extension AppRouterNavigation on GoRouter {
   /// Navigate to /home
   void pushToHome() {
     push('/home');
+  }
+
+  /// Navigate to /main
+  void goToMain() {
+    go('/main');
+  }
+
+  /// Navigate to /main
+  void pushToMain() {
+    push('/main');
   }
 
   /// Navigate to /premium
@@ -166,6 +187,7 @@ extension AppRouterNavigation on GoRouter {
   void pushToUserprofilesettings() {
     push('/user/profile/settings');
   }
+
 }
 
 /// Static navigation helpers
@@ -200,6 +222,16 @@ class Navigate {
   /// Navigate to /home
   static void pushToHome() {
     AppRouter.instance.push('/home');
+  }
+
+  /// Navigate to /main
+  static void goToMain() {
+    AppRouter.instance.go('/main');
+  }
+
+  /// Navigate to /main
+  static void pushToMain() {
+    AppRouter.instance.push('/main');
   }
 
   /// Navigate to /premium
@@ -241,4 +273,5 @@ class Navigate {
   static void pushToUserprofilesettings() {
     AppRouter.instance.push('/user/profile/settings');
   }
+
 }
