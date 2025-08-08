@@ -39,7 +39,6 @@ abstract class Routes {
 
   /// Route: /user/profile/settings
   static const String userprofilesettings = '/user/profile/settings';
-
 }
 
 /// Auto-generated router configuration
@@ -102,8 +101,8 @@ class AppRouter {
     ],
   );
 
-    /// Access the router configuration
-    static GoRouter get router => instance;
+  /// Access the router configuration
+  static GoRouter get router => instance;
 }
 
 /// Type-safe navigation helpers
@@ -187,7 +186,6 @@ extension AppRouterNavigation on GoRouter {
   void pushToUserprofilesettings() {
     push('/user/profile/settings');
   }
-
 }
 
 /// Static navigation helpers
@@ -273,5 +271,4 @@ class Navigate {
   static void pushToUserprofilesettings() {
     AppRouter.instance.push('/user/profile/settings');
   }
-
 }

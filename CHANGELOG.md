@@ -5,6 +5,119 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-08-08
+
+### 🚀 The Zero-Ambiguity Revolution
+
+**Major Update**: Transformed go_router_sugar into the ultimate zero-ambiguity Flutter routing solution. Every feature designed to eliminate confusion, reduce code, and prevent errors.
+
+### ⚡ New: Instant App Creation
+
+- **Revolutionary CLI**: Create complete Flutter apps in seconds with `dart run go_router_sugar new`
+- **Smart Templates**: Choose from minimal, ecommerce, or auth templates
+- **Zero Setup**: Apps come with full routing, navigation, and example pages pre-configured
+- **Production Ready**: Generated apps follow Flutter best practices
+
+```bash
+dart run go_router_sugar new my_app --template ecommerce
+cd my_app && flutter run  # Complete shopping app ready!
+```
+
+### 🧠 New: Smart Parameter Detection (Zero Configuration)
+
+- **Constructor Analysis**: Your constructor parameters automatically become route parameters
+- **Intelligent Parameter Mapping**: Required params → Path params, Optional params → Query params
+- **Type-Safe Parsing**: Automatic parsing for `String`, `int`, `bool`, `double` types
+- **Null Safety**: Perfect integration with Dart's null safety
+- **Zero Configuration**: No annotations, no setup - just write normal constructors
+
+```dart
+class ProductPage extends StatelessWidget {
+  final String productId;    // Auto-becomes /products/:productId  
+  final String? category;    // Auto-becomes ?category=value
+  final int? page;          // Auto-parsed from ?page=1
+  final bool featured;      // Auto-parsed from ?featured=true
+  
+  const ProductPage({
+    super.key,
+    required this.productId,  // Required = Path parameter
+    this.category,            // Optional = Query parameter
+    this.page,               // Nullable = Optional query
+    this.featured = false,   // Default = Optional with fallback
+  });
+}
+```
+
+### 🛡️ New: Zero-Config Route Guards
+
+- **Simple Interface**: Implement `RouteGuard` interface for instant auth protection
+- **Annotation-Based**: Use `@Protected([GuardClass])` for one-line route protection
+- **Flexible Guards**: Support for auth guards, role guards, and custom logic
+- **Automatic Integration**: Guards automatically integrated into generated routes
+- **Zero Boilerplate**: No manual route configuration needed
+
+```dart
+class AuthGuard implements RouteGuard {
+  @override
+  bool canAccess(BuildContext context, GoRouterState state) {
+    return UserService.isLoggedIn;
+  }
+  
+  @override
+  String get redirectPath => '/login';
+}
+
+@Protected([AuthGuard])
+class ProfilePage extends StatelessWidget {
+  // Page automatically protected - zero configuration!
+}
+```
+
+### 🎨 Enhanced CLI Experience
+
+- **Comprehensive Help**: Professional help system with examples and patterns
+- **Template System**: Pre-built app templates for instant productivity
+- **Smart Defaults**: Intelligent default values for all options
+- **Error Handling**: Improved error messages and recovery suggestions
+- **Cross-Platform**: Works seamlessly on Windows, macOS, and Linux
+
+### 🏗️ Architecture Improvements
+
+- **Enhanced Code Generation**: Cleaner, more efficient generated code
+- **Better Error Handling**: Specific exception types for better debugging
+- **Improved Type Safety**: Enhanced compile-time safety throughout
+- **Performance Optimizations**: Faster build times and smaller generated files
+- **Code Quality**: Comprehensive linting and code style improvements
+
+### 🔧 Technical Updates
+
+- **Dependencies**: Updated to latest analyzer, build, and source_gen packages
+- **Linting**: Custom analysis options for package-appropriate standards
+- **Documentation**: Comprehensive inline documentation for all features
+- **Testing**: Enhanced test coverage for all new features
+- **Examples**: Updated examples showcasing all zero-ambiguity features
+
+### 📦 Migration Guide
+
+**From 1.0.x to 1.1.0:**
+
+1. **Smart Parameter Detection**: Your existing constructors will automatically work with the new parameter detection. No changes needed!
+
+2. **Route Guards**: If you were using experimental guards, update to the new interface:
+   ```dart
+   // Old (experimental)
+   class AuthGuard extends RouteGuard { ... }
+   
+   // New (stable)
+   class AuthGuard implements RouteGuard { ... }
+   ```
+
+3. **CLI**: New commands are available but existing build_runner workflow still works perfectly.
+
+### 🎯 Breaking Changes
+
+- **None**: This is a backward-compatible update. All existing code continues to work.
+
 ## [1.0.0] - 2025-08-07
 
 ### 🎉 Initial Release - The Flutter File-Based Routing Revolution

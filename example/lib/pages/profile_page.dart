@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
-class profilePage extends StatelessWidget {
-  const profilePage({super.key});
+/// User profile page demonstrating basic routing.
+class ProfilePage extends StatelessWidget {
+  /// Creates a profile page.
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('profile'),
+        title: const Text('Profile'),
       ),
       body: const Center(
         child: Text(

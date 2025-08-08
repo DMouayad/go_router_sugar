@@ -4,7 +4,7 @@ import 'package:go_router_sugar/go_router_sugar.dart';
 /// Advanced example page demonstrating route guards and analytics.
 ///
 /// This page requires authentication and tracks detailed analytics.
-@RouteGuards([AuthGuard(redirectTo: '/login')])
+@Protected(AuthGuard)
 @PageTransition(TransitionConfig(
   type: PageTransitionType.parallax,
   durationMs: 400,

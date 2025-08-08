@@ -2,40 +2,55 @@
 ///
 /// **Zero-effort file-based routing for Flutter with go_router.**
 ///
-/// This library provides automatic route generation based on your file structure,
-/// eliminating the need to manually configure GoRouter routes.
+/// Transform your Flutter routing from complex configuration to intuitive file organization.
+/// Your file system IS your route map - no boilerplate, no configuration, just works.
 ///
-/// ## Key Features
+/// ## Core Philosophy: Zero Ambiguity
 ///
-/// - 🚀 **Zero Boilerplate**: No manual GoRoute configuration needed
+/// - 🎯 **Constructor Parameters = Route Parameters**: No manual parameter extraction
 /// - 📁 **File-Based Routing**: Your file system becomes your route map
-/// - 🔧 **Highly Configurable**: Customize directory, naming conventions, and more
-/// - 🛡️ **Type-Safe Navigation**: Auto-generated navigation helpers prevent runtime errors
-/// - ⚡ **Dynamic Routes**: Built-in support for path parameters using square bracket syntax (e.g., `[id]`)
-/// - 🎯 **Flutter-First**: Designed specifically for Flutter's ecosystem
+/// - � **Smart Defaults**: Works out of the box with intelligent conventions
+/// - 🛡️ **Type-Safe Navigation**: Impossible to make navigation errors
+/// - ⚡ **One-Command Setup**: `dart run go_router_sugar new my_app`
+/// - 🔧 **Progressive Enhancement**: Simple start, powerful when needed
 ///
-/// ## Usage
+/// ## Quick Start
 ///
-/// 1. Create your page files in `lib/pages/` (or your configured directory).
-/// 2. Run the code generator: `dart run build_runner build`
-/// 3. Use the generated router and navigation helpers in your app.
+/// ```bash
+/// # Create complete app with routing ready
+/// dart run go_router_sugar new my_app --template minimal
+/// cd my_app && flutter run
+/// ```
 ///
-/// See the README for full documentation and examples.
-library go_router_sugar;
+/// ```dart
+/// // Constructor parameters become route parameters automatically
+/// class ProductPage extends StatelessWidget {
+///   final String productId;    // ✅ Auto-injected from /products/:productId
+///   final String? category;    // ✅ Auto-injected from ?category=electronics
+///
+///   const ProductPage({required this.productId, this.category});
+/// }
+///
+/// // Type-safe navigation with perfect IntelliSense
+/// Navigate.goToProduct(productId: '123', category: 'electronics');
+/// ```
+library;
 
 // Export the main classes and utilities that users will interact with
-export 'src/route_info.dart' show RouteInfo, RouteParameter;
+export 'src/route_info.dart' show RouteInfo;
 export 'src/extensions.dart' show GoRouterSugarExtensions;
 export 'src/transitions.dart'
     show PageTransitionType, TransitionConfig, PageTransition;
-export 'src/guards.dart'
-    show
-        RouteGuard,
-        AuthGuard,
-        RouteGuards,
-        RouteMiddlewares,
-        logPageView,
-        trackAnalytics;
+
+// 🎯 Zero-Ambiguity Features: Smart Guards & Parameter Detection
+export 'src/smart_guards.dart'
+    show RouteGuard, AuthGuard, RoleGuard, Protected, RouteGuards;
+export 'src/parameter_detector.dart'
+    show ParameterDetector, ParameterAnalysis, RouteParameter, QueryParameter;
+export 'src/templates.dart' show AppTemplate, PageTemplate;
+
+// Legacy support (will be deprecated in favor of smart_guards.dart)
+export 'src/guards.dart' show RouteMiddlewares, logPageView, trackAnalytics;
 
 // 🧪 EXPERIMENTAL: These features are in active development
 export 'src/query_params.dart'

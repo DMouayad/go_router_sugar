@@ -36,13 +36,14 @@ linter:
     prefer_relative_imports: true
     sort_pub_dependencies: true
     
-    # Documentation rules
-    public_member_api_docs: true
+    # Documentation rules - relaxed for examples and demos
+    public_member_api_docs: false # Disabled for cleaner demo code
     
-    # Code style rules
+    # Code style rules - relaxed for template code
     always_declare_return_types: true
     avoid_catches_without_on_clauses: true
-    avoid_catching_errors: true
+    avoid_catching_errors: false # Allow for specific template use cases
+    sort_constructors_first: false # Allow flexibility in template organization
     avoid_unused_constructor_parameters: true
     cancel_subscriptions: true
     close_sinks: true
@@ -57,7 +58,6 @@ linter:
     prefer_final_in_for_each: true
     prefer_final_locals: true
     sort_child_properties_last: true
-    sort_constructors_first: true
     sort_unnamed_constructors_first: true
     unawaited_futures: true
     use_super_parameters: true

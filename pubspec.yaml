@@ -1,6 +1,6 @@
 name: go_router_sugar
-description: Zero-effort file-based routing for Flutter with go_router. Automatically generates routing configuration from your file structure.
-version: 1.0.0
+description: The Zero-Ambiguity Flutter Routing Revolution. Instant app creation, smart parameter detection, zero-config route guards, and file-based routing.
+version: 1.1.0
 homepage: https://github.com/mukhbit0/go_router_sugar
 repository: https://github.com/mukhbit0/go_router_sugar
 issue_tracker: https://github.com/mukhbit0/go_router_sugar/issues
@@ -30,5 +30,6 @@ dev_dependencies:
 
 # Executable commands
 executables:
-  go_router_sugar: generate
+  go_router_sugar: go_router_sugar
+  go_router_sugar_generate: generate
   go_router_sugar_watch: watch
