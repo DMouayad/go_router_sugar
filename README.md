@@ -1,16 +1,23 @@
 # 🍬 Go Router Sugar
 
 ![Pub Version](https://img.shields.io/pub/v/go_router_sugar)
-![Flutter](https://img.shields.io/badge/Flutter-3.10%2B-blue)
+![Flutter](https://img.shields.io/badge/Flutter-3.22%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 **Zero-effort file-based routing for Flutter** that automatically generates your `go_router` configuration from your file structure. No more boilerplate, no more manual route definitions, and now with **beautiful page transitions**!
 
-## 🔥 **File-Based Routing Revolution**
+Tired of writing and maintaining dozens of lines of `GoRoute` configuration? Go Router Sugar automates this entire process. Simply organize your pages as files, and let the generator do the rest.
 
-Transform your Flutter app routing from **complex configuration hell** to **intuitive file organization**:
+## ✅ Compatibility
 
-### **❌ Before: Manual go_router Hell**
+- Dart SDK: >=3.0.0 <4.0.0  
+- Flutter: >=3.10.0
+
+## 🔥 The "Before" and "After" Transformation
+
+Transform your Flutter app routing from complex configuration to intuitive file organization.
+
+### ❌ Before: Manual `go_router` Configuration
 ```dart
 // 50+ lines of repetitive GoRoute configuration
 GoRouter(
@@ -34,93 +41,40 @@ GoRouter(
 context.go('/prodcuts/123'); // Oops! Typo = runtime error
 ```
 
-### **✅ After: Effortless File-Based Magic**
-```bash
-# Just create files - routes are auto-generated!
-lib/pages/
-├── products/[id]_page.dart     → /products/:id
-├── user/profile/settings_page.dart → /user/profile/settings
-└── home_page.dart              → /home
+### ✅ After: Effortless File-Based Magic
 
-# Generate perfect router code with one command!
-dart pub global activate go_router_sugar
-go_router_sugar
+```bash
+# Your file system IS your route map.
+lib/pages/
+├── products/[id]_page.dart         → /products/:id
+├── user/profile/settings_page.dart → /user/profile/settings
+└── home_page.dart                  → /home
 ```
 
 ```dart
-// Type-safe navigation (autocomplete + compile-time safety!)
+// Use the generated router instantly.
+MaterialApp.router(routerConfig: AppRouter.router);
+
+// Navigate with 100% type-safety.
 Navigate.goToProductsId(id: '123');     // ✅ No typos possible!
 Navigate.goToUserProfileSettings();     // ✅ IntelliSense autocomplete!
-
-// Use generated router instantly
-MaterialApp.router(routerConfig: AppRouter.router);
 ```
 
-### **🚀 The Result: 90% Less Code, 100% More Safety**
+### 🚀 The Result: 90% Less Code, 100% More Safety
 
-- **5 minutes setup** vs 2 hours of manual configuration
-- **Zero boilerplate** - your file system IS your route map
-- **Type-safe navigation** - impossible to make typo errors
-- **Beautiful transitions** - professional animations with one line
-- **Hot reload friendly** - changes reflect instantly
+  - **5 minutes setup** vs. hours of manual configuration.
+  - **Zero boilerplate** - your file system is your route map.
+  - **Type-safe navigation** - impossible to make typo errors.
+  - **Beautiful transitions** - professional animations with one line of code.
+  - **Hot reload friendly** - changes reflect instantly with watch mode.
 
-## 🎯 Usage Guide: Simple vs Advanced
-
-### 🌟 **SIMPLE** (90% of developers - recommended start)
-
-**Just want file-based routing? Start here!**
-
-```dart
-// 1. Create pages in lib/pages/
-lib/pages/home_page.dart
-lib/pages/about_page.dart
-lib/pages/products/[id]_page.dart
-
-// 2. Generate routes
-dart pub global activate go_router_sugar
-go_router_sugar
-
-// 3. Done! Type-safe navigation ready
-Navigate.goToHome();
-Navigate.goToProductsId(id: '123');
-```
-
-### ⚡ **ADVANCED** (10% of developers - enterprise features)
-
-**Need guards, analytics, custom transitions? Add these:**
-
-```dart
-@RouteGuards([AuthGuard()])
-@PageTransition(TransitionConfig.slideRight)
-@RouteAnalytics(trackPageViews: true)
-class PremiumPage extends StatelessWidget { ... }
-```
-
----
-
-## ✨ Features
-
-- 🚀 **Zero Boilerplate**: Automatically generates `GoRouter` configuration
-- 📁 **File-Based Routing**: Your file system becomes your route map
-- 🎨 **Rich Page Transitions**: 15+ built-in transition types with zero effort
-- 🔧 **Highly Configurable**: Customize directories, naming conventions, transitions, and output
-- 🛡️ **Type-Safe Navigation**: Generated navigation helpers prevent runtime errors
-- ⚡ **Dynamic Routes**: Built-in support for path parameters using `[param]` syntax
-- 🎯 **Flutter-First**: Designed specifically for Flutter's ecosystem
-- 📱 **Hot Reload Friendly**: Works seamlessly with Flutter's development workflow
-- 🎭 **Per-Page Transitions**: Configure transitions individually for each page
-- 🔐 **Route Guards**: Built-in authentication and permission guards
-- 🗂️ **Shell Routes**: Automatic layout detection for nested navigation
-- 📊 **Query Parameters**: Type-safe query parameter handling
-- 📈 **Analytics**: Built-in route analytics and performance monitoring
-- 🛠️ **CLI Tool**: Command-line tool for scaffolding and page generation
-- 🔌 **VS Code Extension**: Rich IDE integration with IntelliSense and code actions
+-----
 
 ## 🚀 Quick Start
 
 ### 1. Installation
 
-Add to your `pubspec.yaml`:
+Add `go_router` and `go_router_sugar` to your `pubspec.yaml`.
 
 ```yaml
 dependencies:
@@ -135,31 +89,47 @@ dev_dependencies:
 
 ### 2. Create Your Pages
 
-Create your page files in `lib/pages/` (or your preferred directory):
+Create your page files in `lib/pages/` (or your preferred directory). Page files must end with `_page.dart`.
 
-```dart
+```
 lib/
 ├── pages/
-│   ├── home_page.dart
-│   ├── about_page.dart
-│   ├── profile/
-│   │   └── settings_page.dart
+│   ├── home_page.dart              # Route: /home
 │   └── products/
-│       ├── [id]_page.dart        # Dynamic route: /products/:id
-│       └── list_page.dart
+│       └── [id]_page.dart          # Dynamic route: /products/:id
 └── main.dart
 ```
 
-**Basic page example** (`lib/pages/products/[id]_page.dart`):
+**Simple page example** (`lib/pages/home_page.dart`):
+
+```dart
+import 'package:flutter/material.dart';
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Home')),
+      body: const Center(
+        child: Text('Welcome Home!'),
+      ),
+    );
+  }
+}
+```
+
+**Page with parameters** (`lib/pages/products/[id]_page.dart`):
 
 ```dart
 import 'package:flutter/material.dart';
 
 class ProductPage extends StatelessWidget {
   final String id;
-  
+
   const ProductPage({super.key, required this.id});
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -172,58 +142,41 @@ class ProductPage extends StatelessWidget {
 }
 ```
 
-**Page with custom transition** (`lib/pages/animated_page.dart`):
+### 3. Generate Your Routes
 
-```dart
-import 'package:flutter/material.dart';
-import 'package:go_router_sugar/go_router_sugar.dart';
+Run the code generator to create your `app_router.g.dart` file.
 
-@PageTransition(TransitionConfig.slideRight)
-class AnimatedPage extends StatelessWidget {
-  const AnimatedPage({super.key});
-  
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Animated Page')),
-      body: const Center(
-        child: Text('This page slides in from the right!'),
-      ),
-    );
-  }
-}
-```
+**🌟 Option 1: Use the Simple CLI (Recommended)**
 
-### 3. Generate Routes
-
-**🌟 Easy way** (recommended):
+Our package includes a simple command-line tool (CLI) that makes generation easy. It's a convenient wrapper around the standard Dart build system.
 
 ```bash
-# Install globally once
-dart pub global activate go_router_sugar
+# Run the generator once
+dart run go_router_sugar
 
-# Basic usage with default lib/pages directory
-go_router_sugar
-
-# Custom pages directory
-go_router_sugar --pages-dir lib/screens
-
-# Custom directory and output file
-go_router_sugar -d lib/views -o lib/my_router.g.dart
-
-# Watch for changes (auto-regenerates)
-go_router_sugar_watch --watch --pages-dir lib/screens
+# Watch for file changes (perfect for development)
+dart run go_router_sugar_watch
 ```
 
-**⚙️ Traditional way**:
+**💡 Why `dart run`?** It runs the version pinned in your project, avoiding global version drift across teammates.
+
+-----
+
+**⚙️ Option 2: Use the Standard Dart Build Runner**
+
+If you're already using `build_runner` for other packages, you can use the standard commands.
 
 ```bash
-dart run build_runner build
-```
+# Run the generator once
+dart run build_runner build --delete-conflicting-outputs
 
-**💡 Pro tip**: Use watch mode during development for instant updates!
+# Watch for file changes
+dart run build_runner watch --delete-conflicting-outputs
+```
 
 ### 4. Use the Generated Router
+
+In your `main.dart`, import the generated file and configure your `MaterialApp.router`.
 
 ```dart
 import 'package:flutter/material.dart';
@@ -244,25 +197,50 @@ class MyApp extends StatelessWidget {
 }
 ```
 
-### 5. Navigate with Type Safety
+### 5. Navigate with Type-Safety
+
+Forget string-based paths and runtime errors. Use the generated, type-safe navigation helpers for 100% safety and IDE autocomplete.
 
 ```dart
-// Using generated navigation helpers
+import 'package:flutter/material.dart';
+import 'app_router.g.dart'; // Import the generated file
+
+// Option 1: Static Navigate class (simple and direct)
 Navigate.goToHome();
 Navigate.pushToProductsId(id: 'abc-123');
 
-// Using GoRouter extensions
-context.goToAbout();
-context.pushToProfileSettings();
-
-// Using route constants
-context.go(Routes.home);
-context.push(Routes.productsId.replaceAll(':id', 'abc-123'));
+// Option 2: GoRouter/BuildContext extension methods (fluent and idiomatic)
+context.goToHome();
+context.pushToProductsId(id: 'abc-123');
 ```
+
+While you *can* still use raw strings with the generated `Routes` constants (`context.go(Routes.home)`), the navigation helpers are the recommended, safer approach.
+
+-----
+
+## ✨ Features
+
+  - 🚀 **Zero Boilerplate**: Automatically generates `GoRouter` configuration.
+  - 📁 **File-Based Routing**: Your file system becomes your route map.
+  - 🎨 **Rich Page Transitions**: 15+ built-in transition types with zero effort.
+  - 🔧 **Highly Configurable**: Customize directories, naming conventions, transitions, and output.
+  - 🛡️ **Type-Safe Navigation**: Generated navigation helpers prevent runtime errors.
+  - ⚡ **Dynamic Routes**: Built-in support for path parameters using `[param]` syntax.
+  - 🎯 **Flutter-First**: Designed specifically for Flutter's ecosystem.
+  - 📱 **Hot Reload Friendly**: Works seamlessly with Flutter's development workflow.
+  - 🎭 **Per-Page Transitions**: Configure transitions individually for each page.
+  - 🔐 **Route Guards**: Built-in authentication and permission guards using annotations.
+  - 🗂️ **Shell Routes**: Automatic layout detection for nested navigation.
+  - 📊 **Query Parameters**: Type-safe query parameter handling.
+  - 📈 **Analytics**: Built-in route analytics and performance monitoring.
+  - 🛠️ **CLI Tool**: Simple command-line tool for generation.
+  - 🔌 **VS Code Extension (Planned)**: Rich IDE integration with IntelliSense and code actions.
+
+-----
 
 ## 🎨 Page Transitions
 
-Go Router Sugar includes a comprehensive transition system with **10+ built-in animation types**. Developers can choose from various transitions with zero configuration effort!
+Go Router Sugar includes a comprehensive transition system with 10+ built-in animation types.
 
 ### Available Transition Types
 
@@ -273,7 +251,7 @@ Go Router Sugar includes a comprehensive transition system with **10+ built-in a
 | `slideRight` | Slide from right to left | Forward navigation (iOS style) |
 | `slideLeft` | Slide from left to right | Back navigation, reverse flow |
 | `slideUp` | Slide from bottom to top | Modal sheets, bottom navigation |
-| `slideDown` | Slide from top to bottom | Notifications, dropdown menus |
+| `slideDown`| Slide from top to bottom | Notifications, dropdown menus |
 | `scale` | Scale up from center | Pop-up effects, emphasis |
 | `rotation` | Rotate while transitioning | Creative transitions, games |
 | `size` | Size-based transition | Zoom effects, focus changes |
@@ -282,109 +260,55 @@ Go Router Sugar includes a comprehensive transition system with **10+ built-in a
 
 ### Using Transitions
 
-#### Method 1: Page-Level Annotations (Recommended)
+Annotate your page widget with `@PageTransition` to specify an animation.
 
 ```dart
 import 'package:flutter/material.dart';
 import 'package:go_router_sugar/go_router_sugar.dart';
 
-// Fade transition with custom duration
+// Use a simple preset
 @PageTransition(TransitionConfig.fade)
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
   // ... widget implementation
 }
 
-// Slide transition with custom configuration
+// Customize the transition
 @PageTransition(TransitionConfig(
   type: PageTransitionType.slideUp,
-  duration: Duration(milliseconds: 300),
-  curve: Curves.easeInOut,
+  duration: Duration(milliseconds: 400),
+  curve: Curves.easeInOutCubic,
 ))
 class ModalPage extends StatelessWidget {
   const ModalPage({super.key});
   // ... widget implementation
 }
-
-// Quick preset configurations
-@PageTransition(TransitionConfig.slideRight)  // iOS-style push
-@PageTransition(TransitionConfig.scale)       // Pop-up effect
-@PageTransition(TransitionConfig.none)        // No animation
 ```
 
-#### Method 2: Custom Transition Configs
-
-```dart
-// Create your own transition configurations
-class MyTransitions {
-  static const fastFade = TransitionConfig(
-    type: PageTransitionType.fade,
-    duration: Duration(milliseconds: 150),
-    curve: Curves.easeOut,
-  );
-  
-  static const bouncySlide = TransitionConfig(
-    type: PageTransitionType.slideRight,
-    duration: Duration(milliseconds: 500),
-    curve: Curves.bounceOut,
-  );
-}
-
-@PageTransition(MyTransitions.fastFade)
-class QuickPage extends StatelessWidget {
-  // ... implementation
-}
-```
-
-### Transition Configuration Options
-
-```dart
-class TransitionConfig {
-  final PageTransitionType type;
-  final Duration duration;          // Default: 250ms
-  final Curve curve;               // Default: Curves.easeInOut
-  
-  const TransitionConfig({
-    required this.type,
-    this.duration = const Duration(milliseconds: 250),
-    this.curve = Curves.easeInOut,
-  });
-}
-```
+-----
 
 ## 🔧 Configuration
 
-### CLI Options (Recommended)
+Customize the generator's behavior using CLI flags or a `build.yaml` file.
 
-**Generate with custom settings:**
+**Method 1: CLI Flags (Recommended for one-offs)**
+
+Use command-line flags for quick, temporary changes.
 
 ```bash
-# Install globally once (one-time setup)
-dart pub global activate go_router_sugar
+# Generate with a custom pages directory
+dart run go_router_sugar --pages-dir lib/screens
 
-# Custom pages directory
-go_router_sugar --pages-dir lib/screens
+# Specify a different output file
+dart run go_router_sugar --output lib/config/app_routes.g.dart
 
-# Custom output file  
-go_router_sugar --output lib/my_router.g.dart
-
-# Both custom directory and output
-go_router_sugar -d lib/views -o lib/app_routes.g.dart
-
-# Watch mode with custom settings
-go_router_sugar_watch --watch --pages-dir lib/screens
+# Combine flags
+dart run go_router_sugar --pages-dir lib/views -o lib/my_router.g.dart
 ```
 
-**Common directory patterns:**
+**Method 2: `build.yaml` (Recommended for teams/projects)**
 
-- `lib/pages/` - Default (recommended)
-- `lib/screens/` - Alternative naming  
-- `lib/views/` - MVC pattern
-- `lib/ui/pages/` - Nested structure
-
-### Manual Configuration (build.yaml)
-
-Create a `build.yaml` file in your project root to customize the generator:
+For permanent configuration that you can commit to version control, create a `build.yaml` file in your project root. This is the best way to ensure your entire team uses the same settings.
 
 ```yaml
 targets:
@@ -392,48 +316,51 @@ targets:
     builders:
       go_router_sugar|routes:
         options:
-          # Directory containing your page files
-          pages_directory: "lib/screens"
+          # Directory containing your page files.
+          pages_directory: "lib/pages"
           
-          # Whether to generate type-safe navigation helpers
+          # Whether to generate type-safe navigation helpers.
           generate_navigation_helpers: true
           
-          # Name of the generated router class
+          # Name of the generated router class.
           router_class_name: "AppRouter"
           
-          # Output file path
-          output_file: "lib/my_router.g.dart"
+          # Output file path.
+          output_file: "lib/app_router.g.dart"
 ```
+
+-----
 
 ## 📝 File Naming Conventions
 
-- Page files must end with `_page.dart`
-- Dynamic parameters use square brackets: `[id]_page.dart`, `[category]_page.dart`
-- Nested routes follow your directory structure
+  - Page files must end with `_page.dart`.
+  - Dynamic parameters use square brackets: `[id]_page.dart`, `[slug]_page.dart`.
+  - Nested routes follow your directory structure.
 
-### Examples
-
-| File Path | Generated Route | Widget Class |
-|-----------|----------------|--------------|
-| `lib/pages/home_page.dart` | `/home` | `HomePage` |
-| `lib/pages/user/profile_page.dart` | `/user/profile` | `UserProfilePage` |
-| `lib/pages/products/[id]_page.dart` | `/products/:id` | `ProductPage` |
-| `lib/pages/blog/[year]/[month]_page.dart` | `/blog/:year/:month` | `BlogYearMonthPage` |
+| File Path | Generated Route |
+|-----------|-----------------|
+| `lib/pages/home_page.dart` | `/home` |
+| `lib/pages/user/profile_page.dart`| `/user/profile` |
+| `lib/pages/products/[id]_page.dart`| `/products/:id` |
+| `lib/pages/blog/[year]/[month]_page.dart` | `/blog/:year/:month`|
 
 ## 🛠️ Generated Code
 
-The generator creates several helpful utilities:
+The generator creates a single file (`app_router.g.dart`) with several helpful utilities.
 
-### 1. Router Configuration
+#### 1. Router Configuration
+
+A ready-to-use `GoRouter` instance.
 
 ```dart
 class AppRouter {
-  static final GoRouter instance = GoRouter(routes: [...]);
-  static GoRouter get router => instance;
+  static final GoRouter router = GoRouter(routes: [...]);
 }
 ```
 
-### 2. Route Constants
+#### 2. Route Constants
+
+String constants for all your routes.
 
 ```dart
 abstract class Routes {
@@ -443,170 +370,67 @@ abstract class Routes {
 }
 ```
 
-### 3. Type-Safe Navigation
+#### 3. Type-Safe Navigation
+
+Static methods and extension methods for safe, easy navigation.
 
 ```dart
+// Static helper class
 class Navigate {
-  static void goToHome() => AppRouter.instance.go('/home');
+  static void goToHome() => AppRouter.router.go('/home');
   static void pushToProductsId({required String id}) => 
-    AppRouter.instance.push('/products/$id');
+    AppRouter.router.push('/products/$id');
 }
 
+// Extension on GoRouter/BuildContext
 extension AppRouterNavigation on GoRouter {
   void goToHome() => go('/home');
   void pushToProductsId({required String id}) => push('/products/$id');
 }
 ```
 
-## 📱 Advanced Usage
-
-### Custom Page Classes
-
-Your page widgets can have any constructor signature. The generator will automatically pass path parameters:
-
-```dart
-class UserPage extends StatelessWidget {
-  final String userId;
-  final String? tab; // Optional parameters work too
-  
-  const UserPage({
-    super.key,
-    required this.userId,
-    this.tab,
-  });
-  
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('User: $userId')),
-      body: tab != null
-        ? Text('Tab: $tab')
-        : const Text('Default view'),
-    );
-  }
-}
-```
-
-### Nested Navigation
-
-Create complex nested routes by organizing your files:
-
-```dart
-lib/pages/
-├── dashboard/
-│   ├── dashboard_page.dart       # /dashboard
-│   ├── analytics/
-│   │   └── analytics_page.dart   # /dashboard/analytics
-│   └── settings/
-│       └── settings_page.dart    # /dashboard/settings
-```
-
-### Integration with GoRouter Features
-
-The generated router is fully compatible with GoRouter's features:
-
-```dart
-class AppRouter {
-  static final GoRouter instance = GoRouter(
-    routes: [...], // Generated routes
-    
-    // Add your custom configuration
-    initialLocation: '/home',
-    errorBuilder: (context, state) => const ErrorPage(),
-    redirect: (context, state) {
-      // Add authentication logic
-      if (!isLoggedIn && state.location != '/login') {
-        return '/login';
-      }
-      return null;
-    },
-  );
-}
-```
+-----
 
 ## 🧪 Example Projects
 
+Explore our examples to see the package in action.
+
 ### Minimal Example (Quick Start)
 
-Check out the minimal example to see basic file-based routing in action:
+Demonstrates basic file-based routing.
 
 ```bash
 cd example/minimal
 flutter pub get
-dart pub global activate go_router_sugar
-go_router_sugar
+dart run go_router_sugar
 flutter run
 ```
 
-**What's included:**
-
-- Just 2 simple pages (`home_page.dart`, `about_page.dart`)
-- Clean setup with zero advanced features
-- Perfect for understanding the basics
-
 ### Full Example (All Features)
 
-Explore the complete example with all advanced features:
+Showcases advanced features like transitions, guards, and nested routing.
 
 ```bash
 cd example
 flutter pub get
-dart run build_runner build
+dart run build_runner build --delete-conflicting-outputs
 flutter run
 ```
 
-**What's included:**
-
-- Multiple page types and transitions
-- Advanced features (guards, analytics, custom directories)
-- Complex routing scenarios
-- Production-ready patterns
-
-## 🔄 Development Workflow
-
-### Watch Mode
-
-For continuous generation during development:
-
-```bash
-go_router_sugar_watch --watch
-```
-
-### Clean Build
-
-To regenerate all files:
-
-```bash
-dart run build_runner clean
-dart run build_runner build
-```
-
-### IDE Integration
-
-Most IDEs will automatically run the generator when you save files. You can also set up file watchers for seamless development.
-
 ## 🤝 Contributing
 
-We welcome contributions! Please see our Contributing Guide for details.
-
-### Development Setup
-
-1. Clone the repository
-2. Run `flutter pub get`
-3. Make your changes
-4. Run tests: `dart test`
-5. Submit a pull request
+Contributions are welcome! Please see our Contributing Guide for details on how to submit pull requests and report issues.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the `LICENSE` file for details.
 
 ## 🙋‍♂️ Support
 
-- 📖 [Documentation](https://github.com/yourusername/go_router_sugar)
-- 🐛 [Issue Tracker](https://github.com/yourusername/go_router_sugar/issues)
-- 💬 [Discussions](https://github.com/yourusername/go_router_sugar/discussions)
+  - 📖 **Documentation**: https://github.com/mukhbit0/go_router_sugar
+  - 🐛 **Issue Tracker**: https://github.com/mukhbit0/go_router_sugar/issues
+  - 💬 **Discussions**: https://github.com/mukhbit0/go_router_sugar/discussions
 
----
+-----
 
-Made with ❤️ for the Flutter community
+Made with ❤️ for the Flutter community.
