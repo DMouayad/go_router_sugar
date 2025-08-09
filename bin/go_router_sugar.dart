@@ -120,8 +120,18 @@ Future<void> _runGenerate(List<String> args) async {
     // Generate the routes
     await _generateRoutes(pagesPath, initialRoute, outputPath);
 
+    // Save configuration for watch and visual commands
+    final config = {
+      'pagesPath': pagesPath,
+      'initialRoute': initialRoute,
+      'outputPath': outputPath,
+    };
+    final configFile = File('.go_router_sugar_config.json');
+    await configFile.writeAsString(jsonEncode(config));
+
     print('');
     print('✅ Routes generated successfully!');
+    print('💾 Configuration saved for watch and visual commands!');
     print('💡 Run "dart run go_router_sugar watch" for auto-magic updates!');
   } catch (e) {
     print('');
@@ -157,8 +167,21 @@ Future<void> _runInteractiveGenerate() async {
     // Generate the routes
     await _generateRoutes(pagesPath, initialRoute, outputPath);
 
+    // Save configuration for watch and visual commands
+    final config = {
+      'pagesPath': pagesPath,
+      'initialRoute': initialRoute,
+      'outputPath': outputPath,
+    };
+    final configFile = File('.go_router_sugar_config.json');
+    await configFile.writeAsString(jsonEncode(config));
+
     // Show helpful next steps
     _showHelpfulTips(outputPath);
+    print('');
+    print('💾 Configuration saved! Now you can use:');
+    print('   • "dart run go_router_sugar watch" - Auto-updates');
+    print('   • "dart run go_router_sugar visual" - Route visualization');
   } catch (e) {
     print('');
     print('❌ Oops! Something went wrong: $e');
@@ -168,18 +191,80 @@ Future<void> _runInteractiveGenerate() async {
   }
 }
 
-/// 📁 Ask for pages path with smart defaults
+/// � Smart function to detect page folders automatically
+Future<String?> _detectPagesFolder() async {
+  // Common page folder patterns developers use
+  final commonPatterns = [
+    'lib/pages',
+    'lib/screens',
+    'lib/views',
+    'lib/ui/pages',
+    'lib/ui/screens',
+    'lib/src/pages',
+    'lib/src/screens',
+    'lib/presentation/pages',
+    'lib/presentation/screens',
+    'lib/features',
+    'lib/modules',
+  ];
+
+  // First, scan for folders that contain _page.dart files
+  final foundFolders = <String>[];
+
+  for (final pattern in commonPatterns) {
+    if (Directory(pattern).existsSync()) {
+      final pageFiles = await _scanPageFiles(pattern);
+      if (pageFiles.isNotEmpty) {
+        foundFolders.add(pattern);
+      }
+    }
+  }
+
+  // Also scan the entire lib directory recursively for any _page.dart files
+  final libDir = Directory('lib');
+  if (libDir.existsSync()) {
+    await for (final entity in libDir.list(recursive: true)) {
+      if (entity is File && entity.path.endsWith('_page.dart')) {
+        final folderPath = path.dirname(entity.path);
+        if (!foundFolders.contains(folderPath)) {
+          foundFolders.add(folderPath);
+        }
+      }
+    }
+  }
+
+  if (foundFolders.isEmpty) {
+    return null;
+  }
+
+  // Return the most common/standard pattern first
+  for (final pattern in commonPatterns) {
+    if (foundFolders.contains(pattern)) {
+      return pattern;
+    }
+  }
+
+  // If no standard pattern found, return the first one
+  return foundFolders.first;
+}
+
+/// �📁 Ask for pages path with smart defaults
 Future<String> _askPagesPath() async {
   print('📁 Question 1: Where are your page files located?');
   print('   Common examples: lib/pages, lib/screens, lib/views');
   print('');
 
-  // Check for common page directories
+  // Smart detection of existing page folders
+  final detectedFolder = await _detectPagesFolder();
   final commonPaths = ['lib/pages', 'lib/screens', 'lib/views'];
   final existingPaths =
       commonPaths.where((p) => Directory(p).existsSync()).toList();
 
-  if (existingPaths.isNotEmpty) {
+  if (detectedFolder != null) {
+    print(
+        '   🎯 Auto-detected page folder with existing pages: $detectedFolder');
+    print('');
+  } else if (existingPaths.isNotEmpty) {
     print('   🔍 I found these page folders in your project:');
     for (int i = 0; i < existingPaths.length; i++) {
       print('   ${i + 1}. ${existingPaths[i]}');
@@ -187,11 +272,11 @@ Future<String> _askPagesPath() async {
     print('');
   }
 
-  stdout.write('   📝 Pages path (default: lib/pages): ');
+  final defaultPath = detectedFolder ?? 'lib/pages';
+  stdout.write('   📝 Pages path (default: $defaultPath): ');
   final input = stdin.readLineSync()?.trim() ?? '';
 
   if (input.isEmpty) {
-    const defaultPath = 'lib/pages';
     if (!Directory(defaultPath).existsSync()) {
       print('   📁 Creating $defaultPath folder for you...');
       Directory(defaultPath).createSync(recursive: true);
@@ -319,26 +404,45 @@ Future<void> _runSmartWatch() async {
     }
   }
 
-  // If no config, ask for setup
+  // If no config, try smart detection first
   if (config.isEmpty) {
-    print('🔧 No previous setup found. Let\'s do a quick setup first...');
-    print('');
+    final detectedFolder = await _detectPagesFolder();
+    if (detectedFolder != null) {
+      print('🎯 Auto-detected existing page folder: $detectedFolder');
+      print('🔧 Using smart defaults for quick setup...');
+      print('');
 
-    final pagesPath = await _askPagesPath();
-    final initialRoute = await _askInitialRoute();
-    final outputPath = await _askOutputPath(pagesPath);
+      config = {
+        'pagesPath': detectedFolder,
+        'initialRoute': '/',
+        'outputPath':
+            path.join(path.dirname(detectedFolder), 'app_router.g.dart'),
+      };
 
-    config = {
-      'pagesPath': pagesPath,
-      'initialRoute': initialRoute,
-      'outputPath': outputPath,
-    };
+      // Save config for next time
+      await configFile.writeAsString(jsonEncode(config));
+      print(
+          '💾 Configuration auto-saved! Edit .go_router_sugar_config.json to customize.');
+      print('');
+    } else {
+      print('🔧 No previous setup found. Let\'s do a quick setup first...');
+      print('');
 
-    // Save config for next time
-    await configFile.writeAsString(jsonEncode(config));
-    print('');
-    print('💾 Configuration saved for future watch sessions!');
-    print('');
+      final pagesPath = await _askPagesPath();
+      final initialRoute = await _askInitialRoute();
+      final outputPath = await _askOutputPath(pagesPath);
+
+      config = {
+        'pagesPath': pagesPath,
+        'initialRoute': initialRoute,
+        'outputPath': outputPath,
+      };
+
+      // Save config for next time
+      await configFile.writeAsString(jsonEncode(config));
+      print('💾 Configuration saved for future watch sessions!');
+      print('');
+    }
   }
 
   final pagesPath = config['pagesPath'] as String;
@@ -392,18 +496,38 @@ Future<void> _showVisualRoutes() async {
   print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   print('');
 
-  // Check for config
+  // Check for config, or use smart detection
   final configFile = File('.go_router_sugar_config.json');
-  String pagesPath = 'lib/pages';
+  String? pagesPath;
+  String configSource = '';
 
   if (configFile.existsSync()) {
     try {
       final config = jsonDecode(await configFile.readAsString());
-      pagesPath = config['pagesPath'] ?? 'lib/pages';
+      pagesPath = config['pagesPath'];
+      configSource = '📋 Using saved configuration';
     } catch (e) {
-      // Use default
+      // Config file corrupted, fall back to detection
+      configSource = '⚠️  Config corrupted, using auto-detection';
     }
   }
+
+  // If no config or config failed, try smart detection
+  if (pagesPath == null) {
+    pagesPath = await _detectPagesFolder();
+    if (pagesPath != null) {
+      configSource = '🎯 Auto-detected from existing pages';
+    }
+  }
+
+  // Final fallback
+  if (pagesPath == null) {
+    pagesPath = 'lib/pages';
+    configSource = '🔧 Using default location';
+  }
+
+  print('$configSource: $pagesPath');
+  print('');
 
   if (!Directory(pagesPath).existsSync()) {
     print('❌ Pages directory not found: $pagesPath');
