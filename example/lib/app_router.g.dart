@@ -13,16 +13,14 @@ import 'package:go_router/go_router.dart';
 // 📄 Your page imports (auto-generated)
 import 'pages/about_page.dart'; // → AboutPage
 import 'pages/animated_page.dart'; // → AnimatedPage
-import 'pages/home_page.dart'; // → HomePage
 import 'pages/main_page.dart'; // → MainPage
 import 'pages/premium_page.dart'; // → PremiumPage
-import 'pages/products/[id]_page.dart'; // → [id]Page
-import 'pages/products/list_page.dart'; // → ListPage
+import 'pages/products/[id]_page.dart'; // → ProductPage
 import 'pages/profile_page.dart'; // → ProfilePage
-import 'pages/user/profile/settings_page.dart'; // → SettingsPage
+import 'pages/user/profile/settings_page.dart'; // → UserProfileSettingsPage
 
 /// 🗺️ Route constants - Use these instead of magic strings!
-/// 
+///
 /// Example: context.go(Routes.home) instead of context.go('/home')
 class Routes {
   /// 📄 About page
@@ -30,9 +28,6 @@ class Routes {
 
   /// 📄 Animated page
   static const String animated = '/animated';
-
-  /// 📄 Home page
-  static const String home = '/home';
 
   /// 📄 Main page
   static const String main = '/main';
@@ -43,19 +38,15 @@ class Routes {
   /// 🔍 [id] page for specific id
   static const String products__1 = '/products/:id';
 
-  /// 📄 List page
-  static const String products_list = '/products/list';
-
   /// 📄 Profile page
   static const String profile = '/profile';
 
   /// 📄 Settings page
   static const String user_profile_settings = '/user/profile/settings';
-
 }
 
 /// 🚀 Main router configuration - Your app's navigation brain!
-/// 
+///
 /// Use in main.dart: MaterialApp.router(routerConfig: AppRouter.router)
 class AppRouter {
   /// The configured GoRouter instance - handles all your app navigation
@@ -74,12 +65,6 @@ class AppRouter {
         builder: (context, state) => const AnimatedPage(),
       ),
 
-      // 📄 Home page
-      GoRoute(
-        path: '/home',
-        builder: (context, state) => const HomePage(),
-      ),
-
       // 📄 Main page
       GoRoute(
         path: '/main',
@@ -95,13 +80,7 @@ class AppRouter {
       // 🔍 [id] page for specific id
       GoRoute(
         path: '/products/:id',
-        builder: (context, state) => const [id]Page(),
-      ),
-
-      // 📄 List page
-      GoRoute(
-        path: '/products/list',
-        builder: (context, state) => const ListPage(),
+        builder: (context, state) => const ProductPage(),
       ),
 
       // 📄 Profile page
@@ -113,15 +92,14 @@ class AppRouter {
       // 📄 Settings page
       GoRoute(
         path: '/user/profile/settings',
-        builder: (context, state) => const SettingsPage(),
+        builder: (context, state) => const UserProfileSettingsPage(),
       ),
-
     ],
   );
 }
 
 /// 🧭 Navigation helpers - Type-safe navigation made easy!
-/// 
+///
 /// Instead of: context.go('/products/123') ❌ (typo-prone)
 /// Use this:   Navigate.goToProductDetail(context) ✅ (type-safe)
 class Navigate {
@@ -135,12 +113,6 @@ class Navigate {
   /// Example: Navigate.goToAnimated(context);
   static void goToAnimated(BuildContext context) {
     context.go('/animated');
-  }
-
-  /// Navigate to: 📄 Home page
-  /// Example: Navigate.goToHome(context);
-  static void goToHome(BuildContext context) {
-    context.go('/home');
   }
 
   /// Navigate to: 📄 Main page
@@ -158,16 +130,11 @@ class Navigate {
   /// Navigate to: 🔍 [id] page for specific id
   /// Note: This route needs parameters - implement parameter passing!
   /// Example: Navigate.goToProductsId(context);
-  static void goToProductsId(BuildContext context, {
+  static void goToProductsId(
+    BuildContext context, {
     required String id, // 📝 Pass the id value here
   }) {
     context.go('/products/:id'.replaceAll(':id', id));
-  }
-
-  /// Navigate to: 📄 List page
-  /// Example: Navigate.goToProductsList(context);
-  static void goToProductsList(BuildContext context) {
-    context.go('/products/list');
   }
 
   /// Navigate to: 📄 Profile page
