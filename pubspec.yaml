@@ -1,10 +1,17 @@
 name: go_router_sugar
-description: The Zero-Ambiguity Flutter Routing Revolution. Instant app creation, smart parameter detection, zero-config route guards, and file-based routing.
-version: 1.1.0
+description: The Simplest Flutter Routing Ever! Interactive CLI wizard, auto-magic watch mode, beautiful route visualization. So easy, even kids can use it!
+version: 1.2.0
 homepage: https://github.com/mukhbit0/go_router_sugar
 repository: https://github.com/mukhbit0/go_router_sugar
 issue_tracker: https://github.com/mukhbit0/go_router_sugar/issues
 documentation: https://github.com/mukhbit0/go_router_sugar#readme
+
+topics:
+  - routing
+  - go-router
+  - navigation
+  - code-generation
+  - file-based-routing
 
 environment:
   sdk: '>=3.0.0 <4.0.0'

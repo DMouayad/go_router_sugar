@@ -1,7 +1,0 @@
-# Configuration for the example app
-# This tells build_runner to use go_router_sugar to generate routes
-targets:
-  $default:
-    builders:
-      go_router_sugar:routes:
-        enabled: true
