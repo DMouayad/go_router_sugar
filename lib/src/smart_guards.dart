@@ -54,3 +54,38 @@ class RouteGuards {
 
   const RouteGuards(this.guards);
 }
+
+/// Middleware function type for route processing.
+typedef RouteMiddleware = Future<void> Function(
+    String route, Map<String, String> params);
+
+/// Route middleware annotation for pages.
+///
+/// Use this to add logging, analytics, or other cross-cutting concerns.
+///
+/// Example:
+/// ```dart
+/// @RouteMiddlewares([logPageView, trackAnalytics])
+/// class HomePage extends StatelessWidget {
+///   // ...
+/// }
+/// ```
+@immutable
+class RouteMiddlewares {
+  /// Creates route middlewares annotation.
+  const RouteMiddlewares(this.middlewares);
+
+  /// The list of middleware functions to execute.
+  final List<RouteMiddleware> middlewares;
+}
+
+/// Example middleware function for logging page views.
+Future<void> logPageView(String route, Map<String, String> params) async {
+  print('Page view: $route with params: $params');
+}
+
+/// Example middleware function for analytics tracking.
+Future<void> trackAnalytics(String route, Map<String, String> params) async {
+  // Implement your analytics tracking here
+  print('Analytics: User navigated to $route');
+}

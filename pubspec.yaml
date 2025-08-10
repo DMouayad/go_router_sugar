@@ -1,6 +1,6 @@
 name: go_router_sugar
-description: The Simplest Flutter Routing Ever! Interactive CLI wizard, auto-magic watch mode, beautiful route visualization. So easy, even kids can use it!
-version: 1.2.0
+description: The Simplest Flutter Routing Ever! Revolutionary CLI with interactive wizard, auto-magic watch mode, beautiful route visualization, and unified architecture.
+version: 1.2.1
 homepage: https://github.com/mukhbit0/go_router_sugar
 repository: https://github.com/mukhbit0/go_router_sugar
 issue_tracker: https://github.com/mukhbit0/go_router_sugar/issues
@@ -19,11 +19,13 @@ environment:
 
 dependencies:
   analyzer: ^7.7.1
+  args: ^2.5.0
   build: ^3.0.0
   flutter:
     sdk: flutter
   glob: ^2.1.2
   go_router: ^16.1.0
+  io: ^1.0.4
   meta: ^1.11.0
   path: ^1.9.0
   source_gen: ^3.0.0

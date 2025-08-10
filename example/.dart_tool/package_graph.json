@@ -87,13 +87,15 @@
     },
     {
       "name": "go_router_sugar",
-      "version": "1.0.0",
+      "version": "1.2.0",
       "dependencies": [
         "analyzer",
+        "args",
         "build",
         "flutter",
         "glob",
         "go_router",
+        "io",
         "meta",
         "path",
         "source_gen"

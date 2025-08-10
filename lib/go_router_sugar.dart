@@ -44,13 +44,10 @@ export 'src/transitions.dart'
 
 // 🎯 Zero-Ambiguity Features: Smart Guards & Parameter Detection
 export 'src/smart_guards.dart'
-    show RouteGuard, AuthGuard, RoleGuard, Protected, RouteGuards;
+    show RouteGuard, AuthGuard, RoleGuard, Protected, RouteGuards, RouteMiddlewares, logPageView, trackAnalytics;
 export 'src/parameter_detector.dart'
     show ParameterDetector, ParameterAnalysis, RouteParameter, QueryParameter;
-export 'src/templates.dart' show AppTemplate, PageTemplate;
-
-// Legacy support (will be deprecated in favor of smart_guards.dart)
-export 'src/guards.dart' show RouteMiddlewares, logPageView, trackAnalytics;
+export 'src/core/templates.dart' show AppTemplate, PageTemplate;
 
 // 🧪 EXPERIMENTAL: These features are in active development
 export 'src/query_params.dart'
@@ -62,6 +59,9 @@ export 'src/analytics.dart'
         NavigationEvent,
         AnalyticsProvider,
         ConsoleAnalyticsProvider;
+
+// CLI tools (primarily for internal use by executables)
+export 'interactive_cli.dart' show InteractiveCLI;
 
 // Re-export commonly used go_router classes for convenience
 export 'package:go_router/go_router.dart' show GoRouter, GoRoute, GoRouterState;

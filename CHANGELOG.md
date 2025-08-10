@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2025-08-11
+
+### 🧹 Major Cleanup & Architecture Consolidation
+
+**Critical Update**: Eliminated all ambiguities and conflicting systems for a clean, unified architecture.
+
+### ✅ Fixed
+
+- **Guard System Conflicts**: Removed duplicate `guards.dart`, consolidated to `smart_guards.dart`
+- **Template System Duplication**: Eliminated comprehensive template system, unified to simple templates
+- **RouteInfo Conflicts**: Removed duplicate RouteInfo classes, single source of truth
+- **CLI Command Issues**: Fixed `--help` flag support across all commands
+- **Import/Export Conflicts**: Cleaned up all ambiguous exports and imports
+- **Old Bin Files**: Removed conflicting standalone `generate.dart` and `watch.dart`
+
+### 🎯 Improved
+
+- **Help System**: All commands now support `--help` and `-h` flags with beautiful help output
+- **Command Structure**: Unified command architecture with consistent interfaces
+- **Error Handling**: Better error messages and command validation
+- **Type Safety**: Improved RouteInfo API consistency across analyzer and generator
+
+### 🗑️ Removed
+
+- `lib/src/guards.dart` - Replaced by unified smart guards system
+- `lib/src/templates.dart` - Consolidated to simple template system only
+- `bin/generate.dart` - Replaced by command-based architecture
+- `bin/watch.dart` - Replaced by command-based architecture
+- Duplicate RouteInfo definitions
+
+### 📚 Updated
+
+- README.md with current features and accurate CLI commands
+- All documentation to reflect consolidated architecture
+- Help messages across all commands
+
 ## [1.2.0] - 2025-08-09
 
 ### 🎉 The Ultra-Simple Revolution - So Easy, Even Kids Can Use It!

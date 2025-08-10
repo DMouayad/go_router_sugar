@@ -4,41 +4,42 @@
 ![Flutter](https://img.shields.io/badge/Flutter-3.22%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-**The Simplest Flutter Routing Ever** - So easy, even kids can use it! Revolutionary CLI that transforms complex routing into 3 simple questions and auto-magic route generation.
+**The Simplest Flutter Routing Ever** - Revolutionary CLI that transforms complex routing into simple commands and auto-magic route generation.
 
 ## 🎯 Why Go Router Sugar?
 
 **Before:** Hours of complex routing configuration, manual route definitions, string-based navigation prone to typos.
 
-**After:** 3 simple questions, auto-magic route generation, beautiful visualizations, and 100% type-safe navigation!
+**After:** Simple CLI commands, auto-magic route generation, beautiful visualizations, and 100% type-safe navigation!
 
 **Every feature designed to eliminate confusion, reduce code, and prevent errors:**
 
 - ⚡ **Instant App Creation** - Complete Flutter apps in seconds
 - 🧠 **Smart Parameter Detection** - Constructor parameters = Route parameters (zero config)
-- 🛡️ **Zero-Config Route Guards** - Interface-based auth with @Protected annotation
+- 🛡️ **Smart Route Guards** - Interface-based auth with @Protected annotation
 - 📁 **File System = Route Map** - Your folder structure IS your routing
 - 🔒 **100% Type Safety** - Impossible to make navigation typos
 - 🎨 **Beautiful Transitions** - Professional animations with one line
+- 👀 **Real-time Watch Mode** - Auto-regeneration on file changes
+- 🗺️ **Visual Route Maps** - Beautiful console visualization of your routes
 
 ## ✅ Compatibility
 
 - Dart SDK: >=3.0.0 <4.0.0  
 - Flutter: >=3.10.0
+- Go Router: >=10.0.0
 
-## � Revolutionary Features
+## 🚀 Revolutionary Features
 
 ### ⚡ Instant App Creation
 ```bash
 # Create complete Flutter apps in seconds
-dart run go_router_sugar new my_app --template ecommerce
-cd my_app && flutter run  # Complete shopping app ready!
+dart run go_router_sugar new my_app --template minimal
+cd my_app && flutter run  # Complete app ready!
 ```
 
-**Choose your instant app:**
-- `minimal` - Clean starter with navigation
-- `ecommerce` - Products, cart, checkout, profile
-- `auth` - Complete authentication flow
+**Available templates:**
+- `minimal` - Clean starter with navigation setup
 
 ### 🧠 Smart Parameter Detection (Zero Configuration!)
 ```dart
@@ -75,21 +76,21 @@ class ProductPage extends StatelessWidget {
 - Types auto-parsed (`String`, `int`, `bool`, `double`)
 - Null safety respected throughout
 
-### 🛡️ Zero-Config Route Guards
+### 🛡️ Smart Route Guards (Zero Configuration!)
 ```dart
 // ✅ Simple interface implementation = Instant auth protection
 class AuthGuard implements RouteGuard {
   @override
-  bool canAccess(BuildContext context, GoRouterState state) {
+  Future<bool> canActivate(BuildContext context, Map<String, String> params) async {
     return UserService.isLoggedIn;
   }
   
   @override
-  String get redirectPath => '/login';
+  String? get redirectRoute => '/login';
 }
 
 // ✅ One annotation = Protected route
-@Protected([AuthGuard])
+@Protected(AuthGuard)
 class ProfilePage extends StatelessWidget {
   // Page automatically protected - zero configuration!
 }
@@ -172,6 +173,30 @@ Create a complete Flutter app with routing in seconds:
 dart run go_router_sugar new my_app --template minimal
 cd my_app && flutter run
 ```
+
+**Available templates:**
+- `minimal` - Clean starter with navigation setup
+
+### 🧹 Clean & Unified Architecture (v1.2.1)
+
+Go Router Sugar now features a **completely unified architecture** with zero ambiguities:
+
+- ✅ **Single Source of Truth** - No duplicate classes or conflicting implementations
+- ✅ **Comprehensive Help System** - Every command supports `--help` with beautiful output
+- ✅ **Smart Guards Unified** - Single, powerful guard system with @Protected annotations
+- ✅ **Clean CLI Structure** - Consistent command interface across all operations
+- ✅ **Zero Conflicts** - All architectural duplications eliminated
+
+```bash
+# Get help for any command
+dart run go_router_sugar --help
+dart run go_router_sugar generate --help
+dart run go_router_sugar watch --help
+dart run go_router_sugar visual --help
+dart run go_router_sugar new --help
+```
+
+---
 
 **Choose your instant app:**
 
@@ -305,8 +330,14 @@ Run the code generator to create your `app_router.g.dart` file.
 # Generate routes for existing project
 dart run go_router_sugar generate
 
-# Watch for file changes (perfect for development)
-dart run go_router_sugar_watch
+# Watch for file changes (perfect for development)  
+dart run go_router_sugar watch
+
+# Visualize your route tree
+dart run go_router_sugar visual
+
+# Get help for any command
+dart run go_router_sugar generate --help
 ```
 
 **⚙️ Option 2: Use the Standard Dart Build Runner**

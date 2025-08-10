@@ -1,0 +1,5 @@
+{
+  "pagesPath": "lib/pages",
+  "outputPath": "lib/app_router.g.dart",
+  "initialRoute": "/"
+}

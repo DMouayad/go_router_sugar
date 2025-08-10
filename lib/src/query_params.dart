@@ -92,9 +92,10 @@ extension QueryParamNavigation on Type {
     String route,
     T queryParams,
   ) {
-    // TODO: Implementation would use go_router with generated URI
-    // final uri = Uri(path: route, queryParameters: queryParams.toMap());
-    throw UnimplementedError('Will be implemented with route generation');
+    final uri = Uri(path: route, queryParameters: queryParams.toMap());
+    // This would typically use go_router's context.go() method
+    // For now, we provide the implementation structure
+    throw UnimplementedError('Use context.go("${uri.toString()}") in your app');
   }
 
   /// Push with type-safe query parameters.
@@ -102,8 +103,9 @@ extension QueryParamNavigation on Type {
     String route,
     T queryParams,
   ) {
-    // TODO: Implementation would use go_router with generated URI
-    // final uri = Uri(path: route, queryParameters: queryParams.toMap());
-    throw UnimplementedError('Will be implemented with route generation');
+    final uri = Uri(path: route, queryParameters: queryParams.toMap());
+    // This would typically use go_router's context.push() method  
+    // For now, we provide the implementation structure
+    throw UnimplementedError('Use context.push("${uri.toString()}") in your app');
   }
 }

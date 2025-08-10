@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 
-/// A product page widget that displays details for a specific product.
+/// Product detail page - Shows details for a specific product
 class ProductPage extends StatelessWidget {
-  /// Creates a product page widget with the specified product [id].
-  const ProductPage({super.key, required this.id});
-
-  /// The unique identifier of the product to display.
   final String id;
+  
+  const ProductPage({
+    super.key,
+    required this.id,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Simulate product data lookup
-    final productData = _getProductData(id);
+    final products = {
+      '1': 'iPhone 15',
+      '2': 'MacBook Pro', 
+      '3': 'AirPods Pro'
+    };
+
+    final productName = products[id] ?? 'Unknown Product';
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Product: $id'),
+        title: Text(productName),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: Padding(
@@ -23,77 +29,34 @@ class ProductPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              productData['name']!,
-              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Product ID: $id',
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              productData['description']!,
-              style: const TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'Price: ${productData['price']}',
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.green,
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      productName,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Product ID: $id',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'This demonstrates dynamic routing with parameters. The ID is extracted from the URL and passed to the page constructor.',
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 40),
-            ElevatedButton.icon(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                      content: Text('Added ${productData['name']} to cart!')),
-                );
-              },
-              icon: const Icon(Icons.shopping_cart),
-              label: const Text('Add to Cart'),
             ),
           ],
         ),
       ),
     );
-  }
-
-  Map<String, String> _getProductData(String productId) {
-    // Simulate a data lookup
-    final products = {
-      'product-1': {
-        'name': 'Flutter T-Shirt',
-        'description': 'Comfortable cotton t-shirt with Flutter logo.',
-        'price': '\$29.99',
-      },
-      'product-2': {
-        'name': 'Dart Hoodie',
-        'description': 'Warm hoodie perfect for coding sessions.',
-        'price': '\$59.99',
-      },
-      'product-3': {
-        'name': 'Firebase Mug',
-        'description': 'Keep your coffee hot while building apps.',
-        'price': '\$19.99',
-      },
-      'demo-product': {
-        'name': 'Demo Product',
-        'description':
-            'This is a demonstration product to show dynamic routing.',
-        'price': '\$0.00',
-      },
-    };
-
-    return products[productId] ??
-        {
-          'name': 'Unknown Product',
-          'description': 'Product not found.',
-          'price': '\$0.00',
-        };
   }
 }
