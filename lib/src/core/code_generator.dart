@@ -251,8 +251,9 @@ class CodeGenerator {
 
   String _getRouteDescription(RouteInfo route) {
     final className = route.className.replaceAll('Page', '');
-    if (route.routePath == '/')
+    if (route.routePath == '/') {
       return '🏠 Home page - Your app\'s starting point';
+    }
 
     if (route.parameters.isNotEmpty) {
       final paramDesc =
