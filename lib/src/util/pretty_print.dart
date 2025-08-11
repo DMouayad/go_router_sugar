@@ -48,7 +48,8 @@ void printSuccess(String message) {
 void printError(String message) => print('$kRed❌ Error: $message$kReset');
 
 /// Prints a colored warning message.
-void printWarning(String message) => print('$kYellow⚠️  Warning: $message$kReset');
+void printWarning(String message) =>
+    print('$kYellow⚠️  Warning: $message$kReset');
 
 /// Prints a colored informational message.
 void printInfoMessage(String message) => print('$kCyan$message$kReset');

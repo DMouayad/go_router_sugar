@@ -15,7 +15,8 @@ class VisualCommand extends BaseCommand {
     ..addOption('pages-dir', help: 'Directory containing page files.')
     ..addOption('output', help: 'Output file for generated routes.')
     ..addOption('initial', help: 'Initial route for the app.')
-    ..addFlag('help', abbr: 'h', help: 'Show help for this command.', negatable: false);
+    ..addFlag('help',
+        abbr: 'h', help: 'Show help for this command.', negatable: false);
 
   @override
   Future<void> run(ArgResults argResults) async {
@@ -34,7 +35,8 @@ class VisualCommand extends BaseCommand {
     final config = await ConfigManager.load(argResults);
     if (config == null) {
       printError('Configuration not found.');
-      printInfoMessage('Run "go_router_sugar generate" first to create a configuration file.');
+      printInfoMessage(
+          'Run "go_router_sugar generate" first to create a configuration file.');
       return;
     }
     printInfoMessage('\n🗺️  Generating visual route map...');
@@ -50,37 +52,42 @@ class VisualCommand extends BaseCommand {
 
   void _printRouteTree(List<RouteInfo> routes) {
     final tree = <String, Set<String>>{};
-    
+
     // Build tree structure avoiding duplicates
     for (final route in routes) {
-      final segments = route.routePath.split('/').where((String s) => s.isNotEmpty).toList();
+      final segments =
+          route.routePath.split('/').where((String s) => s.isNotEmpty).toList();
       String currentPath = '';
-      
+
       for (int i = 0; i < segments.length; i++) {
         final parent = currentPath.isEmpty ? '/' : currentPath;
-        currentPath = currentPath.isEmpty ? '/${segments[i]}' : '$currentPath/${segments[i]}';
-        
+        currentPath = currentPath.isEmpty
+            ? '/${segments[i]}'
+            : '$currentPath/${segments[i]}';
+
         // Add to tree only if not already present
         tree.putIfAbsent(parent, () => <String>{}).add(currentPath);
       }
     }
-    
+
     // Convert sets to sorted lists for consistent output
     final sortedTree = <String, List<String>>{};
     tree.forEach((key, value) {
       sortedTree[key] = value.toList()..sort();
     });
-    
+
     _printNode('/', sortedTree, '', true);
   }
-  
-  void _printNode(String path, Map<String, List<String>> tree, String prefix, bool isLast) {
+
+  void _printNode(
+      String path, Map<String, List<String>> tree, String prefix, bool isLast) {
     final displayName = path == '/' ? '🏠 / (root)' : path.split('/').last;
     print('$kDim$prefix${isLast ? '└─' : '├─'}$kReset $displayName');
     final children = tree[path] ?? [];
     for (int i = 0; i < children.length; i++) {
       final child = children[i];
-      _printNode(child, tree, '$kDim$prefix${isLast ? '   ' : '│  '}$kReset', i == children.length - 1);
+      _printNode(child, tree, '$kDim$prefix${isLast ? '   ' : '│  '}$kReset',
+          i == children.length - 1);
     }
   }
 }

@@ -19,7 +19,10 @@ class WatchCommand extends BaseCommand {
     ..addOption('pages-dir', help: 'Directory containing page files.')
     ..addOption('output', help: 'Output file for generated routes.')
     ..addOption('initial', help: 'Initial route for the app.')
-    ..addFlag('help', abbr: 'h', help: 'Show help for this command.', negatable: false); // Support config args
+    ..addFlag('help',
+        abbr: 'h',
+        help: 'Show help for this command.',
+        negatable: false); // Support config args
 
   @override
   Future<void> run(ArgResults argResults) async {

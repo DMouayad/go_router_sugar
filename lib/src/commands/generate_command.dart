@@ -10,17 +10,18 @@ import 'base_command.dart';
 class GenerateCommand extends BaseCommand {
   @override
   String get name => 'generate';
-  
+
   @override
   String get description => 'Generate route configuration from page files';
-  
+
   /// The argument parser for the `generate` command.
   @override
   final ArgParser argParser = ArgParser()
     ..addOption('pages-dir', help: 'Directory containing page files.')
     ..addOption('output', help: 'Output file for generated code.')
     ..addOption('initial', help: 'The initial route for the app.')
-    ..addFlag('help', abbr: 'h', help: 'Show help for this command.', negatable: false);
+    ..addFlag('help',
+        abbr: 'h', help: 'Show help for this command.', negatable: false);
 
   /// The main execution method for the command.
   @override

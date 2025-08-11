@@ -94,7 +94,8 @@ class Navigate {
   Navigate._(); // Private constructor
 
   /// 🧭 The global navigator key for programmatic navigation
-  static final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> _navigatorKey =
+      GlobalKey<NavigatorState>();
 
   /// Access to the navigator key (for advanced use cases)
   static GlobalKey<NavigatorState> get navigatorKey => _navigatorKey;
@@ -103,7 +104,8 @@ class Navigate {
   static void toHome() {
     final context = _navigatorKey.currentContext;
     if (context == null) {
-      throw StateError('Navigator context is null. Make sure AppRouter.router is used in MaterialApp.router');
+      throw StateError(
+          'Navigator context is null. Make sure AppRouter.router is used in MaterialApp.router');
     }
     context.go('/home');
   }
@@ -116,7 +118,8 @@ class Navigate {
   }) {
     final context = _navigatorKey.currentContext;
     if (context == null) {
-      throw StateError('Navigator context is null. Make sure AppRouter.router is used in MaterialApp.router');
+      throw StateError(
+          'Navigator context is null. Make sure AppRouter.router is used in MaterialApp.router');
     }
     final path = '/products/$id';
     context.go(path);
@@ -126,11 +129,11 @@ class Navigate {
   static void toProductsList() {
     final context = _navigatorKey.currentContext;
     if (context == null) {
-      throw StateError('Navigator context is null. Make sure AppRouter.router is used in MaterialApp.router');
+      throw StateError(
+          'Navigator context is null. Make sure AppRouter.router is used in MaterialApp.router');
     }
     context.go('/products/list');
   }
-
 }
 
 /// 🎯 BuildContext Extensions for Fluent Navigation
@@ -138,16 +141,15 @@ class Navigate {
 /// Use these extension methods for more idiomatic Flutter navigation.
 /// Example: context.goToHome() instead of Navigate.toHome()
 extension GoRouterSugarNavigation on BuildContext {
-
   /// 📄 Home page
   void goToHome() => Navigate.toHome();
 
   /// 🔍 Product page for specific id
   void goToProduct({
     required String id,
-  }) => Navigate.toProduct(id: id);
+  }) =>
+      Navigate.toProduct(id: id);
 
   /// 📄 List page
   void goToProductsList() => Navigate.toProductsList();
-
 }

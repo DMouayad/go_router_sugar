@@ -9,17 +9,17 @@ import '../route_info.dart';
 class RouteAnalyzer {
   Future<List<RouteInfo>> analyze(String pagesDirectory) async {
     final routes = <RouteInfo>[];
-    
+
     // Add safety check for directory existence
     final dir = Directory(pagesDirectory);
     if (!dir.existsSync()) {
       print('⚠️ Warning: Pages directory "$pagesDirectory" does not exist.');
       return routes;
     }
-    
+
     try {
       final allFiles = <File>[];
-      
+
       // Collect all files first with error handling
       try {
         await for (final entity in dir.list(recursive: true)) {
@@ -31,24 +31,24 @@ class RouteAnalyzer {
         print('⚠️ Warning: Error listing directory contents: $e');
         return routes;
       }
-      
+
       if (allFiles.isEmpty) {
         print('ℹ️ No *_page.dart files found in $pagesDirectory');
         return routes;
       }
-      
+
       print('🔍 Found ${allFiles.length} page file(s) to analyze...');
-      
+
       // Process each file with comprehensive error handling
       for (final entity in allFiles) {
         try {
           final content = await entity.readAsString();
-          
+
           if (content.trim().isEmpty) {
             print('⚠️ Warning: Empty file skipped: ${entity.path}');
             continue;
           }
-          
+
           CompilationUnit? unit;
           try {
             final parseResult = parseString(
@@ -57,9 +57,10 @@ class RouteAnalyzer {
               throwIfDiagnostics: false,
             );
             unit = parseResult.unit;
-            
+
             if (parseResult.errors.isNotEmpty) {
-              print('⚠️ Warning: Parse errors in ${entity.path}: ${parseResult.errors.length} error(s)');
+              print(
+                  '⚠️ Warning: Parse errors in ${entity.path}: ${parseResult.errors.length} error(s)');
               // Continue anyway as some errors might not prevent analysis
             }
           } on Exception catch (parseError) {
@@ -75,26 +76,29 @@ class RouteAnalyzer {
             continue;
           }
 
-            if (visitor.className != null) {
-              try {
-                final relativePath = p.relative(entity.path, from: pagesDirectory);
-                final routePath = _filePathToRoutePath(relativePath);
-                final importPath = p.relative(entity.path, from: 'lib');
+          if (visitor.className != null) {
+            try {
+              final relativePath =
+                  p.relative(entity.path, from: pagesDirectory);
+              final routePath = _filePathToRoutePath(relativePath);
+              final importPath = p.relative(entity.path, from: 'lib');
 
-                // Convert constructor params to RouteParameter list
-                final parameters = visitor.constructorParams.entries
-                    .map((entry) => RouteParameter(name: entry.key))
-                    .toList();
+              // Convert constructor params to RouteParameter list
+              final parameters = visitor.constructorParams.entries
+                  .map((entry) => RouteParameter(name: entry.key))
+                  .toList();
 
-                routes.add(RouteInfo(
-                  filePath: entity.path,
-                  routePath: routePath,
-                  className: visitor.className!,
-                  parameters: parameters,
-                  importPath: importPath.replaceAll('\\', '/'),
-                ));              print('✅ Analyzed: ${visitor.className} -> $routePath');
+              routes.add(RouteInfo(
+                filePath: entity.path,
+                routePath: routePath,
+                className: visitor.className!,
+                parameters: parameters,
+                importPath: importPath.replaceAll('\\', '/'),
+              ));
+              print('✅ Analyzed: ${visitor.className} -> $routePath');
             } on Exception catch (routeCreationError) {
-              print('⚠️ Warning: Error creating route info for ${entity.path}: $routeCreationError');
+              print(
+                  '⚠️ Warning: Error creating route info for ${entity.path}: $routeCreationError');
               continue;
             }
           } else {
@@ -103,7 +107,8 @@ class RouteAnalyzer {
         } on Exception catch (e, stackTrace) {
           print('⚠️ Warning: Failed to process ${entity.path}: $e');
           // Print abbreviated stack trace for debugging
-          final stackLines = stackTrace.toString().split('\n').take(3).join('\n');
+          final stackLines =
+              stackTrace.toString().split('\n').take(3).join('\n');
           print('   Stack trace preview: $stackLines');
           // Continue processing other files
           continue;
@@ -114,47 +119,51 @@ class RouteAnalyzer {
       print('Stack trace: $stackTrace');
       return routes; // Return partial results instead of failing completely
     }
-    
+
     try {
       routes.sort((a, b) => a.routePath.compareTo(b.routePath));
     } on Exception catch (sortError) {
       print('⚠️ Warning: Error sorting routes: $sortError');
       // Routes will be returned unsorted but functional
     }
-    
+
     print('📋 Total routes found: ${routes.length}');
     return routes;
   }
 
   String _filePathToRoutePath(String filePath) {
     // Normalize path separators and remove extension
-    final pathWithoutExt = filePath.replaceAll('\\', '/').replaceAll('_page.dart', '');
-    
+    final pathWithoutExt =
+        filePath.replaceAll('\\', '/').replaceAll('_page.dart', '');
+
     // Split into segments and process each one
-    final segments = pathWithoutExt.split('/').where((s) => s.isNotEmpty).map((s) {
+    final segments =
+        pathWithoutExt.split('/').where((s) => s.isNotEmpty).map((s) {
       // Convert [param] to :param for dynamic routes
       if (s.startsWith('[') && s.endsWith(']')) {
         return ':${s.substring(1, s.length - 1)}';
       }
       return s;
     }).toList();
-    
+
     // Handle special cases
     if (segments.isEmpty) {
       return '/';
     }
-    
+
     // Build the route path
     final result = '/${segments.join('/')}';
-    
+
     // Remove trailing /index if present
-    final finalPath = result.endsWith('/index') ? result.substring(0, result.length - 6) : result;
-    
+    final finalPath = result.endsWith('/index')
+        ? result.substring(0, result.length - 6)
+        : result;
+
     // Ensure we always return a valid path starting with /
     if (finalPath.isEmpty || finalPath == '/') {
       return '/';
     }
-    
+
     // Ensure path starts with /
     return finalPath.startsWith('/') ? finalPath : '/$finalPath';
   }
@@ -168,7 +177,7 @@ class _WidgetVisitor extends GeneralizingAstVisitor<void> {
   void visitClassDeclaration(ClassDeclaration node) {
     if (className == null && _isWidgetClass(node)) {
       className = node.name.lexeme;
-      
+
       // Look for constructors
       for (final member in node.members) {
         if (member is ConstructorDeclaration) {
@@ -179,25 +188,25 @@ class _WidgetVisitor extends GeneralizingAstVisitor<void> {
       }
     }
   }
-  
+
   bool _isWidgetClass(ClassDeclaration node) {
     final extendsClause = node.extendsClause;
     if (extendsClause != null) {
       final superclass = extendsClause.superclass.toSource();
-      return superclass.contains('StatelessWidget') || 
-             superclass.contains('StatefulWidget') ||
-             superclass.contains('Widget');
+      return superclass.contains('StatelessWidget') ||
+          superclass.contains('StatefulWidget') ||
+          superclass.contains('Widget');
     }
     return false;
   }
-  
+
   void _processConstructor(ConstructorDeclaration constructor) {
     try {
       for (final param in constructor.parameters.parameters) {
         try {
           String? paramName;
           String? paramType;
-          
+
           // Safely extract parameter name and type using toString() as fallback
           if (param is DefaultFormalParameter) {
             final normalParam = param.parameter;
@@ -211,7 +220,9 @@ class _WidgetVisitor extends GeneralizingAstVisitor<void> {
                 // Fallback: parse from string representation
                 final paramStr = normalParam.toString();
                 final parts = paramStr.split(' ');
-                paramName = parts.isNotEmpty ? parts.last.replaceAll(RegExp(r'[^a-zA-Z0-9_]'), '') : null;
+                paramName = parts.isNotEmpty
+                    ? parts.last.replaceAll(RegExp(r'[^a-zA-Z0-9_]'), '')
+                    : null;
               }
             } else if (normalParam is SimpleFormalParameter) {
               try {
@@ -221,7 +232,9 @@ class _WidgetVisitor extends GeneralizingAstVisitor<void> {
               } on Exception {
                 final paramStr = normalParam.toString();
                 final parts = paramStr.split(' ');
-                paramName = parts.isNotEmpty ? parts.last.replaceAll(RegExp(r'[^a-zA-Z0-9_]'), '') : null;
+                paramName = parts.isNotEmpty
+                    ? parts.last.replaceAll(RegExp(r'[^a-zA-Z0-9_]'), '')
+                    : null;
               }
             }
           } else if (param is FieldFormalParameter) {
@@ -232,7 +245,9 @@ class _WidgetVisitor extends GeneralizingAstVisitor<void> {
             } on Exception {
               final paramStr = param.toString();
               final parts = paramStr.split(' ');
-              paramName = parts.isNotEmpty ? parts.last.replaceAll(RegExp(r'[^a-zA-Z0-9_]'), '') : null;
+              paramName = parts.isNotEmpty
+                  ? parts.last.replaceAll(RegExp(r'[^a-zA-Z0-9_]'), '')
+                  : null;
             }
           } else if (param is SimpleFormalParameter) {
             try {
@@ -242,13 +257,16 @@ class _WidgetVisitor extends GeneralizingAstVisitor<void> {
             } on Exception {
               final paramStr = param.toString();
               final parts = paramStr.split(' ');
-              paramName = parts.isNotEmpty ? parts.last.replaceAll(RegExp(r'[^a-zA-Z0-9_]'), '') : null;
+              paramName = parts.isNotEmpty
+                  ? parts.last.replaceAll(RegExp(r'[^a-zA-Z0-9_]'), '')
+                  : null;
             }
           }
-          
+
           // Clean up parameter info
           if (paramName != null && paramName != 'key' && paramName.isNotEmpty) {
-            final cleanType = (paramType ?? 'dynamic').replaceAll('?', '').trim();
+            final cleanType =
+                (paramType ?? 'dynamic').replaceAll('?', '').trim();
             if (cleanType.isNotEmpty) {
               constructorParams[paramName] = cleanType;
             }
@@ -259,13 +277,17 @@ class _WidgetVisitor extends GeneralizingAstVisitor<void> {
             // Using deprecated member with an ignore for wider compatibility.
             // ignore: deprecated_member_use
             final element = param.declaredElement;
-            if (element != null && element.name != 'key' && element.name.isNotEmpty) {
+            if (element != null &&
+                element.name != 'key' &&
+                element.name.isNotEmpty) {
               // Using getDisplayString() without deprecated parameters
               final displayString = element.type.getDisplayString();
-              constructorParams[element.name] = displayString.replaceAll('?', '').trim();
+              constructorParams[element.name] =
+                  displayString.replaceAll('?', '').trim();
             }
           } on Exception {
-            print('⚠️ Warning: Failed to extract parameter info (tried both methods): param type = ${param.runtimeType}');
+            print(
+                '⚠️ Warning: Failed to extract parameter info (tried both methods): param type = ${param.runtimeType}');
             // Skip this parameter rather than failing the entire analysis
             continue;
           }

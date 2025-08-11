@@ -45,8 +45,8 @@ class InteractiveCLI {
     // Final generation step with spinner
     await _runWithSpinner(
       'Generating routes...',
-      () async =>
-          await Future.delayed(const Duration(milliseconds: 750)), // Simulate work
+      () async => await Future.delayed(
+          const Duration(milliseconds: 750)), // Simulate work
     );
 
     _outroSuccess(pagesPath, initialRoute, outputPath);
@@ -58,7 +58,7 @@ class InteractiveCLI {
       'outputPath': outputPath,
     };
   }
-  
+
   void _clearScreen() {
     try {
       if (Platform.isWindows) {
@@ -101,9 +101,10 @@ class InteractiveCLI {
     const suggestedDir = 'lib/pages';
     if (optionsSet.add(suggestedDir)) {
       final exists = await Directory(suggestedDir).exists();
-      descriptions[suggestedDir] = exists ? '📁 Existing folder' : '🆕 Recommended structure';
+      descriptions[suggestedDir] =
+          exists ? '📁 Existing folder' : '🆕 Recommended structure';
     }
-    
+
     // 3. Always offer a custom path.
     final options = optionsSet.toList();
     options.add('CUSTOM');
@@ -111,7 +112,7 @@ class InteractiveCLI {
 
     final descList = options.map((opt) => descriptions[opt]!).toList();
     final selectedIndex = await _showMenu(options, descList);
-    
+
     String selectedPath;
     if (options[selectedIndex] == 'CUSTOM') {
       selectedPath = await _askCustomPath('Enter pages directory path');
@@ -141,10 +142,11 @@ class InteractiveCLI {
       '📝 Enter custom route'
     ];
     final selectedIndex = await _showMenu(options, descriptions);
-    
+
     String selectedRoute;
     if (options[selectedIndex] == 'CUSTOM') {
-      selectedRoute = await _askCustomPath('Enter initial route (e.g., /login)');
+      selectedRoute =
+          await _askCustomPath('Enter initial route (e.g., /login)');
     } else {
       selectedRoute = options[selectedIndex];
     }
@@ -169,7 +171,7 @@ class InteractiveCLI {
       '📝 Enter custom path'
     ];
     final selectedIndex = await _showMenu(options, descriptions);
-    
+
     String selectedPath;
     if (options[selectedIndex] == 'CUSTOM') {
       selectedPath = await _askCustomPath('Enter output file path');
@@ -185,11 +187,13 @@ class InteractiveCLI {
     _intro('Step 4: Confirm your configuration');
     print('$_dim┌───────────────────────────────────────$_reset');
     print('$_dim$_s$_reset $_bold$_yellow Pages Directory:$_reset $pagesPath');
-    print('$_dim$_s$_reset $_bold$_yellow Initial Route:  $_reset $initialRoute');
+    print(
+        '$_dim$_s$_reset $_bold$_yellow Initial Route:  $_reset $initialRoute');
     print('$_dim$_s$_reset $_bold$_yellow Output File:    $_reset $outputPath');
     print('$_dim└───────────────────────────────────────$_reset');
     print('');
-    final selectedIndex = await _showMenu(['Yes, generate routes', 'No, cancel'], []);
+    final selectedIndex =
+        await _showMenu(['Yes, generate routes', 'No, cancel'], []);
     return selectedIndex == 0;
   }
 
@@ -206,13 +210,13 @@ class InteractiveCLI {
     print('');
   }
 
-  void _outroSuccess(
-      String pagesPath, String initialRoute, String outputPath) {
+  void _outroSuccess(String pagesPath, String initialRoute, String outputPath) {
     print('');
     print('$_green$_sSuccess Success! Your configuration is complete.$_reset');
     print('$_dim┌───────────────────────────────────────$_reset');
     print('$_dim$_s$_reset $_bold$_yellow Pages Directory:$_reset $pagesPath');
-    print('$_dim$_s$_reset $_bold$_yellow Initial Route:  $_reset $initialRoute');
+    print(
+        '$_dim$_s$_reset $_bold$_yellow Initial Route:  $_reset $initialRoute');
     print('$_dim$_s$_reset $_bold$_yellow Output File:    $_reset $outputPath');
     print('$_dim└───────────────────────────────────────$_reset');
     print('\n$_dim Happy routing! ✨$_reset');
@@ -253,8 +257,7 @@ class InteractiveCLI {
     }
   }
 
-  Future<int> _showMenu(
-      List<String> options, List<String> descriptions) async {
+  Future<int> _showMenu(List<String> options, List<String> descriptions) async {
     for (int i = 0; i < options.length; i++) {
       final isCustom = options[i] == 'CUSTOM';
       final optionText = isCustom ? 'Custom path...' : options[i];
@@ -299,7 +302,7 @@ class InteractiveCLI {
   }
 
   // --- LOGIC HELPERS ---
-  
+
   Future<String?> _detectPagesFolder() async {
     final commonPatterns = [
       'lib/presentation/pages',

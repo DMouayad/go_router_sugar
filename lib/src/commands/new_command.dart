@@ -22,7 +22,8 @@ class NewCommand extends BaseCommand {
           help: 'The template to use.',
           defaultsTo: 'minimal',
           allowed: ['minimal'])
-      ..addFlag('help', abbr: 'h', help: 'Show help for this command.', negatable: false);
+      ..addFlag('help',
+          abbr: 'h', help: 'Show help for this command.', negatable: false);
   }
 
   @override
@@ -30,7 +31,8 @@ class NewCommand extends BaseCommand {
     if (argResults['help'] as bool) {
       print('🍬 New Command Help');
       print('');
-      print('Creates a new Flutter project with go_router_sugar pre-configured.');
+      print(
+          'Creates a new Flutter project with go_router_sugar pre-configured.');
       print('');
       print('Usage: go_router_sugar new <app_name> [options]');
       print('');
@@ -72,7 +74,7 @@ class NewCommand extends BaseCommand {
     printInfoMessage('⚙️  Generating initial routes...');
     final projectDir = Directory(appName);
     final originalDir = Directory.current;
-    
+
     try {
       Directory.current = projectDir; // Temporarily change directory
       // Run the generate command with default options in the new project

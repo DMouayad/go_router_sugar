@@ -47,7 +47,15 @@ export 'package:go_router/go_router.dart';
 
 // 🎯 Zero-Ambiguity Features: Smart Guards & Parameter Detection
 export 'src/smart_guards.dart'
-    show RouteGuard, AuthGuard, RoleGuard, Protected, RouteGuards, RouteMiddlewares, logPageView, trackAnalytics;
+    show
+        RouteGuard,
+        AuthGuard,
+        RoleGuard,
+        Protected,
+        RouteGuards,
+        RouteMiddlewares,
+        logPageView,
+        trackAnalytics;
 export 'src/parameter_detector.dart'
     show ParameterDetector, ParameterAnalysis, RouteParameter, QueryParameter;
 export 'src/core/templates.dart' show AppTemplate, PageTemplate;

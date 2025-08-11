@@ -63,7 +63,7 @@ class ConfigManager {
         return null;
       }
     }
-    
+
     // No valid config found from any source.
     return null;
   }

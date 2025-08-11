@@ -104,8 +104,9 @@ extension QueryParamNavigation on Type {
     T queryParams,
   ) {
     final uri = Uri(path: route, queryParameters: queryParams.toMap());
-    // This would typically use go_router's context.push() method  
+    // This would typically use go_router's context.push() method
     // For now, we provide the implementation structure
-    throw UnimplementedError('Use context.push("${uri.toString()}") in your app');
+    throw UnimplementedError(
+        'Use context.push("${uri.toString()}") in your app');
   }
 }
