@@ -42,6 +42,9 @@ export 'src/extensions.dart' show GoRouterSugarExtensions;
 export 'src/transitions.dart'
     show PageTransitionType, TransitionConfig, PageTransition;
 
+// Re-export GoRouter classes so generated code can use them without separate dependency
+export 'package:go_router/go_router.dart';
+
 // 🎯 Zero-Ambiguity Features: Smart Guards & Parameter Detection
 export 'src/smart_guards.dart'
     show RouteGuard, AuthGuard, RoleGuard, Protected, RouteGuards, RouteMiddlewares, logPageView, trackAnalytics;

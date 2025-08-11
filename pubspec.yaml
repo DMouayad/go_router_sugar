@@ -40,5 +40,3 @@ dev_dependencies:
 # Executable commands
 executables:
   go_router_sugar: go_router_sugar
-  go_router_sugar_generate: generate
-  go_router_sugar_watch: watch

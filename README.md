@@ -237,20 +237,13 @@ dart run go_router_sugar new --help
 dependencies:
   flutter:
     sdk: flutter
-  go_router: ^16.1.0
+  # go_router is automatically included as a dependency
 
 dev_dependencies:
-  build_runner: ^2.4.9
-  go_router_sugar: ^1.1.0
+  go_router_sugar: ^1.2.1
 ```
-  flutter:
-    sdk: flutter
-  go_router: ^16.1.0
 
-dev_dependencies:
-  build_runner: ^2.4.9
-  go_router_sugar: ^1.0.0
-```
+**Note**: You don't need to manually add `go_router` to your pubspec.yaml - it's automatically included as a dependency of go_router_sugar.
 
 ### 5. Create Your Pages
 
